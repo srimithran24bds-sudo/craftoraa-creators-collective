@@ -13,6 +13,10 @@ import SellerSubscription from "./pages/SellerSubscription";
 import SellerSupport from "./pages/SellerSupport";
 import CustomerBrowse from "./pages/CustomerBrowse";
 import CategoryPage from "./pages/CategoryPage";
+import ProductCustomize from "./pages/ProductCustomize";
+import OrderConfirmation from "./pages/OrderConfirmation";
+import PaymentPage from "./pages/PaymentPage";
+import OrderSummary from "./pages/OrderSummary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +38,10 @@ const App = () => (
           <Route path="/seller/support" element={<SellerSupport />} />
           <Route path="/customer" element={<CustomerBrowse />} />
           <Route path="/customer/:category" element={<CategoryPage />} />
+          <Route path="/customer/:category/:productSlug" element={<ProductCustomize />} />
+          <Route path="/order/:category/:productSlug" element={<OrderConfirmation />} />
+          <Route path="/payment/:category/:productSlug" element={<PaymentPage />} />
+          <Route path="/order-summary" element={<OrderSummary />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
