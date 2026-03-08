@@ -42,6 +42,22 @@ const SellerSubscription = () => {
   const [memberFilter, setMemberFilter] = useState<"all" | "paid" | "free">("all");
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
 
+  // Load sellers from database
+  useEffect(() => {
+    fetchSellers().then((sellers) => {
+      setSubscribers(
+        sellers.map((s: any) => ({
+          name: s.name,
+          craft: s.craft_type,
+          plan: s.plan,
+          paid: s.paid,
+          joinedDate: s.created_at?.split("T")[0] || "",
+          avatar: s.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2),
+        }))
+      );
+    }).catch(() => {});
+  }, []);
+
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
