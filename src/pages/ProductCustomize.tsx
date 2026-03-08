@@ -1,25 +1,29 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Upload, Sparkles, Check, Image as ImageIcon } from "lucide-react";
+import { ArrowLeft, Upload, Sparkles, Check, Image as ImageIcon, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 import { categoryData } from "./CategoryPage";
+import { supabase } from "@/integrations/supabase/client";
 
 const designStyles = [
-  { name: "Aesthetic", desc: "Soft tones with elegant finish", emoji: "✨" },
-  { name: "Floral", desc: "Real & pressed flower designs", emoji: "🌸" },
-  { name: "Minimal", desc: "Clean lines, subtle beauty", emoji: "◻️" },
-  { name: "Vintage", desc: "Classic retro-inspired look", emoji: "🕰️" },
-  { name: "Elegant", desc: "Premium luxurious style", emoji: "💎" },
+  { name: "Aesthetic", desc: "Soft tones with elegant finish" },
+  { name: "Floral", desc: "Real & pressed flower designs" },
+  { name: "Minimal", desc: "Clean lines, subtle beauty" },
+  { name: "Vintage", desc: "Classic retro-inspired look" },
+  { name: "Elegant", desc: "Premium luxurious style" },
 ];
 
 const ProductCustomize = () => {
   const navigate = useNavigate();
   const { category, productSlug } = useParams();
+  const { toast } = useToast();
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
   const [wishDescription, setWishDescription] = useState("");
   const [selectedDesign, setSelectedDesign] = useState<number | null>(null);
-  const [showDesigns, setShowDesigns] = useState(false);
+  const [generatedImages, setGeneratedImages] = useState<(string | null)[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const data = categoryData[category || "resin"];
   const product = data?.products.find((p) => p.slug === productSlug);
@@ -35,8 +39,44 @@ const ProductCustomize = () => {
     }
   };
 
-  const handleGenerate = () => {
-    if (wishDescription.trim()) setShowDesigns(true);
+  const handleGenerate = async () => {
+    if (!wishDescription.trim()) return;
+    setIsGenerating(true);
+    setGeneratedImages([]);
+    setSelectedDesign(null);
+
+    try {
+      // Generate images for all styles in parallel
+      const results = await Promise.all(
+        designStyles.map(async (style) => {
+          try {
+            const { data: fnData, error } = await supabase.functions.invoke("generate-design", {
+              body: {
+                description: wishDescription,
+                productName: product.name,
+                style: style.name,
+              },
+            });
+            if (error) throw error;
+            return fnData?.imageUrl ?? null;
+          } catch {
+            return null;
+          }
+        })
+      );
+      setGeneratedImages(results);
+
+      const successCount = results.filter(Boolean).length;
+      if (successCount === 0) {
+        toast({ title: "Generation failed", description: "Could not generate images. Please try again.", variant: "destructive" });
+      } else {
+        toast({ title: `${successCount} designs generated!`, description: "Select your preferred design below." });
+      }
+    } catch {
+      toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleConfirm = () => {
@@ -47,10 +87,13 @@ const ProductCustomize = () => {
           designStyle: designStyles[selectedDesign].name,
           wishDescription,
           referenceImage,
+          generatedImage: generatedImages[selectedDesign] ?? null,
         },
       });
     }
   };
+
+  const showDesigns = generatedImages.length > 0 || isGenerating;
 
   return (
     <div className="min-h-screen bg-background pb-8">
@@ -105,11 +148,20 @@ const ProductCustomize = () => {
         />
         <Button
           onClick={handleGenerate}
-          disabled={!wishDescription.trim()}
+          disabled={!wishDescription.trim() || isGenerating}
           className="w-full mt-3 gradient-warm text-primary-foreground font-body"
         >
-          <Sparkles className="w-4 h-4 mr-2" />
-          Generate Design Previews
+          {isGenerating ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Generating Designs...
+            </>
+          ) : (
+            <>
+              <Sparkles className="w-4 h-4 mr-2" />
+              Generate Design Previews
+            </>
+          )}
         </Button>
       </section>
 
@@ -117,39 +169,62 @@ const ProductCustomize = () => {
       {showDesigns && (
         <section className="px-4 mb-5">
           <h3 className="text-sm font-display font-semibold text-foreground mb-3">🎨 Choose Your Design Style</h3>
-          <div className="grid grid-cols-2 gap-3">
-            {designStyles.map((style, i) => (
-              <button
-                key={i}
-                onClick={() => setSelectedDesign(i)}
-                className={`craft-card p-4 text-left transition-all ${
-                  selectedDesign === i
-                    ? "ring-2 ring-primary bg-primary/5"
-                    : ""
-                }`}
-              >
-                <div className="w-full h-20 bg-muted rounded-lg flex items-center justify-center mb-2">
-                  <span className="text-2xl">{style.emoji}</span>
-                </div>
-                <h4 className="font-body font-semibold text-foreground text-xs">{style.name}</h4>
-                <p className="text-[10px] text-muted-foreground font-body mt-0.5">{style.desc}</p>
-                {selectedDesign === i && (
-                  <div className="flex items-center gap-1 mt-1.5 text-primary">
-                    <Check className="w-3 h-3" />
-                    <span className="text-[10px] font-semibold font-body">Selected</span>
-                  </div>
-                )}
-              </button>
-            ))}
-          </div>
 
-          <Button
-            onClick={handleConfirm}
-            disabled={selectedDesign === null}
-            className="w-full mt-4 bg-secondary text-secondary-foreground font-body"
-          >
-            Confirm Design & Proceed
-          </Button>
+          {isGenerating ? (
+            <div className="grid grid-cols-2 gap-3">
+              {designStyles.map((style, i) => (
+                <div key={i} className="craft-card p-4">
+                  <div className="w-full h-28 bg-muted rounded-lg flex items-center justify-center mb-2 animate-pulse">
+                    <Loader2 className="w-5 h-5 text-muted-foreground animate-spin" />
+                  </div>
+                  <h4 className="font-body font-semibold text-foreground text-xs">{style.name}</h4>
+                  <p className="text-[10px] text-muted-foreground font-body mt-0.5">{style.desc}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3">
+              {designStyles.map((style, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedDesign(i)}
+                  className={`craft-card p-3 text-left transition-all ${
+                    selectedDesign === i ? "ring-2 ring-primary bg-primary/5" : ""
+                  }`}
+                >
+                  <div className="w-full h-28 bg-muted rounded-lg flex items-center justify-center mb-2 overflow-hidden">
+                    {generatedImages[i] ? (
+                      <img
+                        src={generatedImages[i]!}
+                        alt={`${style.name} design`}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    ) : (
+                      <span className="text-xs text-muted-foreground font-body">Failed</span>
+                    )}
+                  </div>
+                  <h4 className="font-body font-semibold text-foreground text-xs">{style.name}</h4>
+                  <p className="text-[10px] text-muted-foreground font-body mt-0.5">{style.desc}</p>
+                  {selectedDesign === i && (
+                    <div className="flex items-center gap-1 mt-1.5 text-primary">
+                      <Check className="w-3 h-3" />
+                      <span className="text-[10px] font-semibold font-body">Selected</span>
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {!isGenerating && (
+            <Button
+              onClick={handleConfirm}
+              disabled={selectedDesign === null}
+              className="w-full mt-4 bg-secondary text-secondary-foreground font-body"
+            >
+              Confirm Design & Proceed
+            </Button>
+          )}
         </section>
       )}
     </div>
