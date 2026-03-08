@@ -8,6 +8,7 @@ import {
   Crown,
   HeadphonesIcon,
   ShoppingBag,
+  Gift,
 } from "lucide-react";
 import { useOrderStore } from "@/store/orderStore";
 
