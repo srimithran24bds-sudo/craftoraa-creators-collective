@@ -12,13 +12,13 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "₹499/mo",
+    price: "₹200/mo",
     features: ["Unlimited products", "Priority visibility", "Analytics dashboard", "Promotional tools"],
     popular: true,
   },
   {
     name: "Premium",
-    price: "₹999/mo",
+    price: "₹500/mo",
     features: ["Everything in Pro", "Featured seller badge", "Custom storefront", "Dedicated support"],
   },
 ];
