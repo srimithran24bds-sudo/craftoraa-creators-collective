@@ -206,7 +206,7 @@ const SellerSubscription = () => {
           <div className="grid grid-cols-3 gap-2">
             <div className="craft-card p-3 text-center">
               <Users className="w-5 h-5 text-primary mx-auto mb-1" />
-              <p className="font-display font-bold text-foreground text-lg">{mockSubscribers.length}</p>
+              <p className="font-display font-bold text-foreground text-lg">{subscribers.length}</p>
               <p className="text-[10px] text-muted-foreground font-body">Total</p>
             </div>
             <div className="craft-card p-3 text-center">
