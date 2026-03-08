@@ -127,6 +127,10 @@ const CategoryPage = () => {
             className="craft-card overflow-hidden text-left"
           >
             <div className="h-28 bg-muted relative">
+              <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-primary/90 flex items-center gap-0.5">
+                <Palette className="w-3 h-3 text-primary-foreground" />
+                <span className="text-[9px] font-semibold text-primary-foreground font-body">Custom Order</span>
+              </span>
               <span className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 flex items-center justify-center">
                 <Heart className="w-4 h-4 text-muted-foreground" />
               </span>
