@@ -4,6 +4,8 @@ import categoryResin from "@/assets/category-resin.jpg";
 import categoryHomeDecor from "@/assets/category-homedecor.jpg";
 import categoryTextile from "@/assets/category-textile.jpg";
 import categoryGifts from "@/assets/category-gifts.jpg";
+import LanguageSelector from "@/components/LanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const categoryData: Record<string, {
   title: string;
