@@ -3,6 +3,7 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { ArrowLeft, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useOrderStore } from "@/store/orderStore";
 
 const OrderConfirmation = () => {
   const navigate = useNavigate();
@@ -12,7 +13,9 @@ const OrderConfirmation = () => {
     product: { name: string; price: number; seller: string };
     designStyle: string;
     wishDescription: string;
+    referenceImage: string | null;
   } | null;
+  const addOrder = useOrderStore((s) => s.addOrder);
 
   const [form, setForm] = useState({
     name: "",
@@ -33,6 +36,23 @@ const OrderConfirmation = () => {
   const isValid = form.name && form.phone && form.address && form.deliveryDate;
 
   const handleProceed = () => {
+    // Save custom order for seller dashboard
+    addOrder({
+      id: `CRA-${Date.now().toString(36).toUpperCase()}`,
+      customerName: form.name,
+      phone: form.phone,
+      address: form.address,
+      deliveryDate: form.deliveryDate,
+      productName: state.product.name,
+      productType: "Custom",
+      seller: state.product.seller,
+      price: state.product.price,
+      wishDescription: state.wishDescription,
+      designStyle: state.designStyle,
+      referenceImage: state.referenceImage ?? null,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+    });
     navigate(`/payment/${category}/${productSlug}`, {
       state: { ...state, customerDetails: form },
     });

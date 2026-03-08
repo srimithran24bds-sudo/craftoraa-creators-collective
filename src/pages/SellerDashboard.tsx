@@ -7,15 +7,25 @@ import {
   Lightbulb,
   Crown,
   HeadphonesIcon,
+  ShoppingBag,
 } from "lucide-react";
+import { useOrderStore } from "@/store/orderStore";
 
 const sellerFeatures = [
+  {
+    icon: ShoppingBag,
+    title: "Custom Orders",
+    desc: "View customer design requests",
+    path: "/seller/custom-orders",
+    gradient: "gradient-warm",
+    showBadge: true,
+  },
   {
     icon: Package,
     title: "Products",
     desc: "Upload, edit & manage your crafts",
     path: "/seller/products",
-    gradient: "gradient-warm",
+    gradient: "gradient-sage",
   },
   {
     icon: Users,
@@ -56,6 +66,7 @@ const sellerFeatures = [
 
 const SellerDashboard = () => {
   const navigate = useNavigate();
+  const pendingCount = useOrderStore((s) => s.orders.filter((o) => o.status === "pending").length);
 
   return (
     <div className="min-h-screen bg-background">
@@ -82,8 +93,13 @@ const SellerDashboard = () => {
             <button
               key={feature.title}
               onClick={() => navigate(feature.path)}
-              className="craft-card p-4 flex flex-col items-start gap-3 text-left cursor-pointer border-0"
+              className="craft-card p-4 flex flex-col items-start gap-3 text-left cursor-pointer border-0 relative"
             >
+              {"showBadge" in feature && feature.showBadge && pendingCount > 0 && (
+                <span className="absolute top-2 right-2 w-5 h-5 rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold flex items-center justify-center">
+                  {pendingCount}
+                </span>
+              )}
               <div
                 className={`w-11 h-11 rounded-xl ${feature.gradient} flex items-center justify-center`}
               >

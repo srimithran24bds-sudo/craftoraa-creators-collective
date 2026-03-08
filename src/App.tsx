@@ -17,6 +17,7 @@ import ProductCustomize from "./pages/ProductCustomize";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import PaymentPage from "./pages/PaymentPage";
 import OrderSummary from "./pages/OrderSummary";
+import SellerCustomOrders from "./pages/SellerCustomOrders";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/seller/ideas" element={<SellerIdeas />} />
           <Route path="/seller/subscription" element={<SellerSubscription />} />
           <Route path="/seller/support" element={<SellerSupport />} />
+          <Route path="/seller/custom-orders" element={<SellerCustomOrders />} />
           <Route path="/customer" element={<CustomerBrowse />} />
           <Route path="/customer/:category" element={<CategoryPage />} />
           <Route path="/customer/:category/:productSlug" element={<ProductCustomize />} />
