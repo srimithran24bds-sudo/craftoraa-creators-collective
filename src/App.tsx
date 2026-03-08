@@ -19,6 +19,7 @@ import PaymentPage from "./pages/PaymentPage";
 import OrderSummary from "./pages/OrderSummary";
 import SellerCustomOrders from "./pages/SellerCustomOrders";
 import SellerGiftProducts from "./pages/SellerGiftProducts";
+import SellerNotifications from "./pages/SellerNotifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
