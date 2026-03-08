@@ -22,6 +22,14 @@ const sellerFeatures = [
     showBadge: true,
   },
   {
+    icon: Gift,
+    title: "Gift Products",
+    desc: "Manage gift items & custom requests",
+    path: "/seller/gift-products",
+    gradient: "gradient-warm",
+    showGiftBadge: true,
+  },
+  {
     icon: Package,
     title: "Products",
     desc: "Upload, edit & manage your crafts",
