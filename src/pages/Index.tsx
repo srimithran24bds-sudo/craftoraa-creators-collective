@@ -11,11 +11,9 @@ const Index = () => {
       {/* Header */}
       <header className="px-4 py-4 flex items-center justify-between">
         <h1 className="text-2xl font-display font-bold text-foreground tracking-tight">
+          <img src={craftoraLogo} alt="Craftora" className="w-10 h-10 rounded-full inline-block mr-2 align-middle" />
           Craftora
         </h1>
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-primary" />
-        </div>
       </header>
 
       {/* Hero */}
