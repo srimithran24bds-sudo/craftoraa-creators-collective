@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ArrowLeft, Check, Smartphone, CreditCard, Building2 } from "lucide-react";
+import { ArrowLeft, Check, Smartphone, CreditCard, Building2, QrCode } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import craftoraQr from "@/assets/craftora-upi-qr.jpg";
+
+const CRAFTORA_UPI_ID = "nsrimithra445@okicici";
 
 const upiApps = [
   { id: "gpay", name: "Google Pay", color: "from-blue-500 to-green-500", icon: "G" },
