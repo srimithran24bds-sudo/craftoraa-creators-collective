@@ -101,11 +101,11 @@ const SellerSubscription = () => {
 
   const handleUpgrade = (planName: string) => {
     if (planName === currentPlan) return;
-    toast({ title: `Upgrading to ${planName}`, description: "Redirecting to payment..." });
-    setTimeout(() => {
-      setCurrentPlan(planName);
-      toast({ title: `${planName} Plan Activated ✨`, description: "Enjoy your new features!" });
-    }, 1500);
+    const plan = plans.find((p) => p.name === planName);
+    if (!plan || plan.price === "Free") return;
+    navigate("/seller/subscription/payment", {
+      state: { planName, planPrice: plan.price },
+    });
   };
 
   const filteredMembers = subscribers.filter((m) => {

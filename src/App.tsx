@@ -20,6 +20,7 @@ import OrderSummary from "./pages/OrderSummary";
 import SellerCustomOrders from "./pages/SellerCustomOrders";
 import SellerGiftProducts from "./pages/SellerGiftProducts";
 import SellerNotifications from "./pages/SellerNotifications";
+import SubscriptionPayment from "./pages/SubscriptionPayment";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/seller/chatbot" element={<SellerChatbot />} />
           <Route path="/seller/ideas" element={<SellerIdeas />} />
           <Route path="/seller/subscription" element={<SellerSubscription />} />
+          <Route path="/seller/subscription/payment" element={<SubscriptionPayment />} />
           <Route path="/seller/support" element={<SellerSupport />} />
           <Route path="/seller/custom-orders" element={<SellerCustomOrders />} />
           <Route path="/seller/gift-products" element={<SellerGiftProducts />} />
