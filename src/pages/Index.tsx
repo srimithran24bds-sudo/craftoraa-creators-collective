@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { Store, ShoppingBag, Sparkles } from "lucide-react";
+import { Store, ShoppingBag } from "lucide-react";
 import heroCrafts from "@/assets/hero-crafts.jpg";
+import craftoraLogo from "@/assets/craftora-logo.png";
 
 const Index = () => {
   const navigate = useNavigate();
