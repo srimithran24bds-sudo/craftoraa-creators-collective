@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Crown, User, Upload, Users, CreditCard, Clock } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { registerSeller, fetchSellers } from "@/lib/orderService";
 
 const plans = [
   {
