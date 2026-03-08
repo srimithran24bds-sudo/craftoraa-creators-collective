@@ -7,7 +7,9 @@ import {
   Lightbulb,
   Crown,
   HeadphonesIcon,
+  ShoppingBag,
 } from "lucide-react";
+import { useOrderStore } from "@/store/orderStore";
 
 const sellerFeatures = [
   {
