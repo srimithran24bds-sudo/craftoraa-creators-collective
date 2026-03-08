@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, HelpCircle, Mail, FileText, MessageCircle, Send, Star, CheckCircle, Clock, Upload, Save, User, Building2, Paperclip } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const faqs = [
   { q: "How do I upload products?", a: "Go to Products → tap the + button → fill in details and upload images." },
@@ -11,13 +12,14 @@ const faqs = [
 ];
 
 interface FeedbackEntry {
+  id?: string;
   type: string;
   message: string;
   rating: number;
   date: string;
-  status: "submitted" | "reviewed";
-  name?: string;
-  businessName?: string;
+  status: string;
+  name: string;
+  businessName: string;
   logoFile?: string;
   attachmentFile?: string;
 }
@@ -36,7 +38,34 @@ const SellerSupport = () => {
   const [submitting, setSubmitting] = useState(false);
   const [feedbackList, setFeedbackList] = useState<FeedbackEntry[]>([]);
 
-  const handleSubmitFeedback = () => {
+  // Load all feedback from database
+  useEffect(() => {
+    const loadFeedback = async () => {
+      const { data, error } = await supabase
+        .from("seller_feedback")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (data && !error) {
+        setFeedbackList(
+          data.map((row: any) => ({
+            id: row.id,
+            type: row.type,
+            message: row.message,
+            rating: row.rating,
+            date: row.created_at?.split("T")[0] || "",
+            status: row.status,
+            name: row.name,
+            businessName: row.business_name,
+            logoFile: row.logo_file,
+            attachmentFile: row.attachment_file,
+          }))
+        );
+      }
+    };
+    loadFeedback();
+  }, []);
+
+  const handleSubmitFeedback = async () => {
     if (!sellerName.trim()) {
       toast({ title: "Name required", description: "Please enter your name.", variant: "destructive" });
       return;
@@ -54,17 +83,34 @@ const SellerSupport = () => {
       return;
     }
     setSubmitting(true);
-    setTimeout(() => {
+    try {
+      const { data: inserted, error } = await supabase
+        .from("seller_feedback")
+        .insert({
+          name: sellerName,
+          business_name: businessName,
+          type: feedbackType,
+          message: feedback,
+          rating,
+          logo_file: logoFile?.name || null,
+          attachment_file: attachmentFile?.name || null,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
       const newEntry: FeedbackEntry = {
-        type: feedbackType,
-        message: feedback,
-        rating,
-        date: new Date().toISOString().split("T")[0],
-        status: "submitted",
-        name: sellerName,
-        businessName: businessName,
-        logoFile: logoFile?.name,
-        attachmentFile: attachmentFile?.name,
+        id: inserted.id,
+        type: inserted.type,
+        message: inserted.message,
+        rating: inserted.rating,
+        date: inserted.created_at?.split("T")[0] || "",
+        status: inserted.status,
+        name: inserted.name,
+        businessName: inserted.business_name,
+        logoFile: inserted.logo_file,
+        attachmentFile: inserted.attachment_file,
       };
       setFeedbackList((prev) => [newEntry, ...prev]);
       setFeedback("");
@@ -74,9 +120,12 @@ const SellerSupport = () => {
       setBusinessName("");
       setLogoFile(null);
       setAttachmentFile(null);
-      setSubmitting(false);
       toast({ title: "Feedback saved! 💬", description: "Thank you for helping us improve Craftora." });
-    }, 1000);
+    } catch {
+      toast({ title: "Failed to save", description: "Please try again.", variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const typeLabel = (t: string) => {
@@ -226,7 +275,7 @@ const SellerSupport = () => {
             <div className="space-y-2">
               <h3 className="font-display font-semibold text-foreground text-sm">Your Feedback History</h3>
               {feedbackList.map((entry, i) => (
-                <div key={i} className="craft-card p-4 space-y-2">
+                <div key={entry.id || i} className="craft-card p-4 space-y-2">
                   <div className="flex items-center gap-3 mb-1">
                     <div className="w-9 h-9 rounded-full gradient-warm flex items-center justify-center shrink-0">
                       <span className="text-primary-foreground font-body font-bold text-xs">
@@ -234,8 +283,8 @@ const SellerSupport = () => {
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-body font-semibold text-foreground text-sm truncate">{entry.name || "Anonymous"}</p>
-                      <p className="text-[10px] text-muted-foreground font-body truncate">{entry.businessName || ""}</p>
+                      <p className="font-body font-semibold text-foreground text-sm truncate">{entry.name}</p>
+                      <p className="text-[10px] text-muted-foreground font-body truncate">{entry.businessName}</p>
                     </div>
                     <span className={`inline-flex items-center gap-1 text-[10px] font-body font-semibold px-2 py-0.5 rounded-full shrink-0 ${
                       entry.status === "reviewed" ? "bg-secondary/15 text-secondary" : "bg-accent/15 text-accent"

@@ -119,6 +119,45 @@ export type Database = {
         }
         Relationships: []
       }
+      seller_feedback: {
+        Row: {
+          attachment_file: string | null
+          business_name: string
+          created_at: string
+          id: string
+          logo_file: string | null
+          message: string
+          name: string
+          rating: number
+          status: string
+          type: string
+        }
+        Insert: {
+          attachment_file?: string | null
+          business_name: string
+          created_at?: string
+          id?: string
+          logo_file?: string | null
+          message: string
+          name: string
+          rating?: number
+          status?: string
+          type?: string
+        }
+        Update: {
+          attachment_file?: string | null
+          business_name?: string
+          created_at?: string
+          id?: string
+          logo_file?: string | null
+          message?: string
+          name?: string
+          rating?: number
+          status?: string
+          type?: string
+        }
+        Relationships: []
+      }
       sellers: {
         Row: {
           business_name: string
