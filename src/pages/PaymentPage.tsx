@@ -3,6 +3,9 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { ArrowLeft, CreditCard, Smartphone, Building2, Banknote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
+import { createOrder } from "@/lib/orderService";
+import { useOrderStore } from "@/store/orderStore";
 
 const paymentMethods = [
   { id: "upi", label: "UPI", icon: Smartphone, desc: "Pay via Google Pay, PhonePe, etc." },
@@ -24,6 +27,8 @@ const PaymentPage = () => {
 
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
   const [upiId, setUpiId] = useState("");
+  const [processing, setProcessing] = useState(false);
+  const addOrder = useOrderStore((s) => s.addOrder);
 
   if (!state) {
     navigate(`/customer/${category}`);
@@ -32,8 +37,50 @@ const PaymentPage = () => {
 
   const canPay = selectedMethod === "cod" || (selectedMethod === "upi" && upiId) || selectedMethod === "card" || selectedMethod === "netbanking";
 
-  const handlePay = () => {
-    navigate("/order-summary", { state: { ...state, paymentMethod: selectedMethod } });
+  const handlePay = async () => {
+    setProcessing(true);
+    const orderId = `CRA-${Date.now().toString(36).toUpperCase()}`;
+    try {
+      // Save to database and trigger seller matching
+      await createOrder({
+        orderId,
+        customerName: state.customerDetails.name,
+        customerPhone: state.customerDetails.phone,
+        deliveryAddress: state.customerDetails.address,
+        deliveryDate: state.customerDetails.deliveryDate,
+        productName: state.product.name,
+        productCategory: category || "resin",
+        productPrice: state.product.price,
+        designStyle: state.designStyle,
+        wishDescription: state.wishDescription,
+        paymentMethod: selectedMethod || undefined,
+      });
+
+      // Also save to local store for seller dashboard
+      addOrder({
+        id: orderId,
+        customerName: state.customerDetails.name,
+        phone: state.customerDetails.phone,
+        address: state.customerDetails.address,
+        deliveryDate: state.customerDetails.deliveryDate,
+        productName: state.product.name,
+        productType: "Custom",
+        seller: state.product.seller,
+        price: state.product.price,
+        wishDescription: state.wishDescription,
+        designStyle: state.designStyle,
+        referenceImage: null,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+      });
+
+      toast({ title: "Order placed! 🎉", description: "Matching you with the best artisans..." });
+      navigate("/order-summary", { state: { ...state, paymentMethod: selectedMethod } });
+    } catch {
+      toast({ title: "Order failed", description: "Please try again.", variant: "destructive" });
+    } finally {
+      setProcessing(false);
+    }
   };
 
   return (
@@ -95,10 +142,10 @@ const PaymentPage = () => {
       <div className="px-4">
         <Button
           onClick={handlePay}
-          disabled={!canPay}
+          disabled={!canPay || processing}
           className="w-full gradient-warm text-primary-foreground font-body"
         >
-          {selectedMethod === "cod" ? "Place Order" : `Pay ₹${state.product.price}`}
+          {processing ? "Processing..." : selectedMethod === "cod" ? "Place Order" : `Pay ₹${state.product.price}`}
         </Button>
       </div>
     </div>

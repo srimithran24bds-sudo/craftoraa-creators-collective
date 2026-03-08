@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Crown, User, Upload, Users, CreditCard, Clock } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { registerSeller, fetchSellers } from "@/lib/orderService";
 
 const plans = [
   {
@@ -41,6 +42,22 @@ const SellerSubscription = () => {
   const [memberFilter, setMemberFilter] = useState<"all" | "paid" | "free">("all");
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
 
+  // Load sellers from database
+  useEffect(() => {
+    fetchSellers().then((sellers) => {
+      setSubscribers(
+        sellers.map((s: any) => ({
+          name: s.name,
+          craft: s.craft_type,
+          plan: s.plan,
+          paid: s.paid,
+          joinedDate: s.created_at?.split("T")[0] || "",
+          avatar: s.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2),
+        }))
+      );
+    }).catch(() => {});
+  }, []);
+
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -51,27 +68,35 @@ const SellerSubscription = () => {
 
   const isFormValid = formData.name && formData.craftType && formData.businessName && formData.contact && formData.location;
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!isFormValid) {
       toast({ title: "Missing fields", description: "Please fill in all required fields.", variant: "destructive" });
       return;
     }
     setSubmitting(true);
-    setTimeout(() => {
-      const initials = formData.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
-      const newSubscriber: Subscriber = {
+    try {
+      await registerSeller({
         name: formData.name,
-        craft: formData.craftType,
+        businessName: formData.businessName,
+        craftType: formData.craftType,
+        contact: formData.contact,
+        location: formData.location,
+        socialMedia: formData.socialMedia,
         plan: currentPlan,
         paid: currentPlan !== "Starter",
-        joinedDate: new Date().toISOString().split("T")[0],
-        avatar: initials,
-      };
-      setSubscribers((prev) => [newSubscriber, ...prev]);
-      setSubmitting(false);
+      });
+      const initials = formData.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+      setSubscribers((prev) => [{
+        name: formData.name, craft: formData.craftType, plan: currentPlan,
+        paid: currentPlan !== "Starter", joinedDate: new Date().toISOString().split("T")[0], avatar: initials,
+      }, ...prev]);
       setRegistered(true);
       toast({ title: "Welcome to Craftora! 🎉", description: "You've successfully joined the community." });
-    }, 1200);
+    } catch {
+      toast({ title: "Registration failed", description: "Please try again.", variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleUpgrade = (planName: string) => {

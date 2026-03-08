@@ -1,25 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeft,
-  Package,
-  Users,
-  Bot,
-  Lightbulb,
-  Crown,
-  HeadphonesIcon,
-  ShoppingBag,
-  Gift,
+  ArrowLeft, Package, Users, Bot, Lightbulb, Crown, HeadphonesIcon, ShoppingBag, Gift, Bell,
 } from "lucide-react";
 import { useOrderStore } from "@/store/orderStore";
 
 const sellerFeatures = [
+  {
+    icon: Bell,
+    title: "Order Requests",
+    desc: "New orders matched to your skills",
+    path: "/seller/notifications",
+    gradient: "gradient-warm",
+    showBadge: true,
+  },
   {
     icon: ShoppingBag,
     title: "Custom Orders",
     desc: "View customer design requests",
     path: "/seller/custom-orders",
     gradient: "gradient-warm",
-    showBadge: true,
   },
   {
     icon: Gift,
