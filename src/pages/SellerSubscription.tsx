@@ -22,16 +22,9 @@ const plans = [
   },
 ];
 
-const mockSubscribers = [
-  { name: "Priya Sharma", craft: "Resin Art", plan: "Pro", paid: true, joinedDate: "2026-01-15", avatar: "PS" },
-  { name: "Ananya Verma", craft: "Crochet", plan: "Premium", paid: true, joinedDate: "2026-02-03", avatar: "AV" },
-  { name: "Rahul Mehra", craft: "Clay Art", plan: "Starter", paid: false, joinedDate: "2026-02-20", avatar: "RM" },
-  { name: "Kavita Desai", craft: "Candle Making", plan: "Pro", paid: true, joinedDate: "2026-01-28", avatar: "KD" },
-  { name: "Sneha Reddy", craft: "Macrame", plan: "Starter", paid: false, joinedDate: "2026-03-01", avatar: "SR" },
-  { name: "Deepika Joshi", craft: "Gift Crafts", plan: "Premium", paid: true, joinedDate: "2025-12-10", avatar: "DJ" },
-  { name: "Arjun Nair", craft: "Pottery", plan: "Pro", paid: true, joinedDate: "2026-02-14", avatar: "AN" },
-  { name: "Meera Kapoor", craft: "Handmade Jewelry", plan: "Starter", paid: false, joinedDate: "2026-03-05", avatar: "MK" },
-];
+type Subscriber = { name: string; craft: string; plan: string; paid: boolean; joinedDate: string; avatar: string };
+
+const mockSubscribers: Subscriber[] = [];
 
 const SellerSubscription = () => {
   const navigate = useNavigate();
