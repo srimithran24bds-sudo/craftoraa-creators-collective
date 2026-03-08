@@ -17,6 +17,7 @@ import ProductCustomize from "./pages/ProductCustomize";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import PaymentPage from "./pages/PaymentPage";
 import OrderSummary from "./pages/OrderSummary";
+import SellerCustomOrders from "./pages/SellerCustomOrders";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
