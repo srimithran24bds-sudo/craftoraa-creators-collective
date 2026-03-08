@@ -10,7 +10,7 @@ const Index = () => {
       {/* Header */}
       <header className="px-4 py-4 flex items-center justify-between">
         <h1 className="text-2xl font-display font-bold text-foreground tracking-tight">
-          Craftoraa
+          Craftora
         </h1>
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-primary" />
@@ -89,7 +89,7 @@ const Index = () => {
       {/* Featured Section */}
       <section className="px-4 pb-8">
         <h3 className="text-lg font-display font-semibold text-foreground mb-4">
-          Why Craftoraa?
+          Why Craftora?
         </h3>
         <div className="space-y-3">
           {[
