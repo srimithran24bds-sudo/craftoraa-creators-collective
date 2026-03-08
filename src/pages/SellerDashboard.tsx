@@ -4,9 +4,9 @@ import {
   Package,
   Users,
   Bot,
+  Lightbulb,
   Crown,
   HeadphonesIcon,
-  MessageSquare,
 } from "lucide-react";
 
 const sellerFeatures = [
@@ -20,36 +20,36 @@ const sellerFeatures = [
   {
     icon: Users,
     title: "Connections",
-    desc: "Network with creators & designers",
+    desc: "Community chat by craft category",
     path: "/seller/connections",
     gradient: "gradient-sage",
   },
   {
     icon: Bot,
     title: "Problem Solver",
-    desc: "AI chatbot for business help",
+    desc: "Search problems & find solutions",
     path: "/seller/chatbot",
     gradient: "gradient-warm",
   },
   {
-    icon: Crown,
-    title: "Subscription",
-    desc: "Unlock premium seller features",
-    path: "/seller/subscription",
+    icon: Lightbulb,
+    title: "Business Ideas",
+    desc: "Packaging, promotion & growth tips",
+    path: "/seller/ideas",
     gradient: "gradient-sage",
   },
   {
-    icon: HeadphonesIcon,
-    title: "Support",
-    desc: "Help center & issue resolution",
-    path: "/seller/support",
+    icon: Crown,
+    title: "Subscription",
+    desc: "Register & unlock premium features",
+    path: "/seller/subscription",
     gradient: "gradient-warm",
   },
   {
-    icon: MessageSquare,
-    title: "Feedback",
-    desc: "Share suggestions & report issues",
-    path: "/seller/feedback",
+    icon: HeadphonesIcon,
+    title: "Support & Feedback",
+    desc: "Help center, report issues & feedback",
+    path: "/seller/support",
     gradient: "gradient-sage",
   },
 ];
@@ -59,7 +59,6 @@ const SellerDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="px-4 py-4 flex items-center gap-3">
         <button
           onClick={() => navigate("/")}
@@ -77,7 +76,6 @@ const SellerDashboard = () => {
         </div>
       </header>
 
-      {/* Features Grid */}
       <section className="px-4 py-4">
         <div className="grid grid-cols-2 gap-3">
           {sellerFeatures.map((feature) => (
