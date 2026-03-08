@@ -27,6 +27,8 @@ const PaymentPage = () => {
 
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
   const [upiId, setUpiId] = useState("");
+  const [processing, setProcessing] = useState(false);
+  const addOrder = useOrderStore((s) => s.addOrder);
 
   if (!state) {
     navigate(`/customer/${category}`);
