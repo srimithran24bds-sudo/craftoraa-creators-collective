@@ -13,7 +13,9 @@ const OrderConfirmation = () => {
     product: { name: string; price: number; seller: string };
     designStyle: string;
     wishDescription: string;
+    referenceImage: string | null;
   } | null;
+  const addOrder = useOrderStore((s) => s.addOrder);
 
   const [form, setForm] = useState({
     name: "",
