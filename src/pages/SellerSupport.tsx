@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, HelpCircle, Mail, FileText, MessageCircle, Send, Star, CheckCircle, Clock } from "lucide-react";
+import { ArrowLeft, HelpCircle, Mail, FileText, MessageCircle, Send, Star, CheckCircle, Clock, Upload, Save, User, Building2, Paperclip } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 const faqs = [
@@ -16,6 +16,10 @@ interface FeedbackEntry {
   rating: number;
   date: string;
   status: "submitted" | "reviewed";
+  name?: string;
+  businessName?: string;
+  logoFile?: string;
+  attachmentFile?: string;
 }
 
 const SellerSupport = () => {
@@ -24,14 +28,26 @@ const SellerSupport = () => {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("suggestion");
   const [rating, setRating] = useState(0);
+  const [sellerName, setSellerName] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [feedbackList, setFeedbackList] = useState<FeedbackEntry[]>([
-    { type: "suggestion", message: "It would be great to have a dark mode option for the seller dashboard.", rating: 4, date: "2026-03-05", status: "reviewed" },
-    { type: "feature", message: "Please add bulk upload for products!", rating: 5, date: "2026-03-02", status: "reviewed" },
+    { type: "suggestion", message: "It would be great to have a dark mode option for the seller dashboard.", rating: 4, date: "2026-03-05", status: "reviewed", name: "Priya Sharma", businessName: "Priya Crafts" },
+    { type: "feature", message: "Please add bulk upload for products!", rating: 5, date: "2026-03-02", status: "reviewed", name: "Meera Devi", businessName: "ArtByMeera" },
   ]);
 
   const handleSubmitFeedback = () => {
+    if (!sellerName.trim()) {
+      toast({ title: "Name required", description: "Please enter your name.", variant: "destructive" });
+      return;
+    }
+    if (!businessName.trim()) {
+      toast({ title: "Business name required", description: "Please enter your business name.", variant: "destructive" });
+      return;
+    }
     if (!feedback.trim()) {
       toast({ title: "Empty feedback", description: "Please write your feedback before submitting.", variant: "destructive" });
       return;
@@ -48,13 +64,21 @@ const SellerSupport = () => {
         rating,
         date: new Date().toISOString().split("T")[0],
         status: "submitted",
+        name: sellerName,
+        businessName: businessName,
+        logoFile: logoFile?.name,
+        attachmentFile: attachmentFile?.name,
       };
       setFeedbackList((prev) => [newEntry, ...prev]);
       setFeedback("");
       setRating(0);
       setFeedbackType("suggestion");
+      setSellerName("");
+      setBusinessName("");
+      setLogoFile(null);
+      setAttachmentFile(null);
       setSubmitting(false);
-      toast({ title: "Feedback submitted! 💬", description: "Thank you for helping us improve Craftora." });
+      toast({ title: "Feedback saved! 💬", description: "Thank you for helping us improve Craftora." });
     }, 1000);
   };
 
@@ -125,7 +149,35 @@ const SellerSupport = () => {
 
       {activeTab === "feedback" && (
         <section className="px-4 pb-8 space-y-4">
-          {/* Submit Form */}
+          {/* Seller Info */}
+          <div className="craft-card p-4 space-y-3">
+            <h3 className="font-display font-semibold text-foreground text-sm">Your Details</h3>
+            <div className="flex items-center gap-2">
+              <User className="w-4 h-4 text-muted-foreground shrink-0" />
+              <input
+                value={sellerName}
+                onChange={(e) => setSellerName(e.target.value)}
+                placeholder="Your Name *"
+                className="w-full bg-muted rounded-lg px-3 py-2.5 text-sm font-body text-foreground placeholder:text-muted-foreground outline-none"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-muted-foreground shrink-0" />
+              <input
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+                placeholder="Business Name *"
+                className="w-full bg-muted rounded-lg px-3 py-2.5 text-sm font-body text-foreground placeholder:text-muted-foreground outline-none"
+              />
+            </div>
+            <label className="flex items-center gap-2 p-3 border border-dashed border-border rounded-lg text-muted-foreground cursor-pointer hover:border-primary transition-colors">
+              {logoFile ? <CheckCircle className="w-4 h-4 text-secondary" /> : <Upload className="w-4 h-4" />}
+              <span className="text-xs font-body flex-1">{logoFile ? logoFile.name : "Upload Business Logo"}</span>
+              <input type="file" accept="image/*" className="hidden" onChange={(e) => setLogoFile(e.target.files?.[0] || null)} />
+            </label>
+          </div>
+
+          {/* Rating */}
           <div className="craft-card p-4 space-y-3">
             <h3 className="font-display font-semibold text-foreground text-sm">Rate Your Experience</h3>
             <div className="flex gap-1">
@@ -137,6 +189,7 @@ const SellerSupport = () => {
             </div>
           </div>
 
+          {/* Feedback Form */}
           <div className="craft-card p-4 space-y-3">
             <h3 className="font-display font-semibold text-foreground text-sm">Share Your Feedback</h3>
             <select
@@ -156,13 +209,18 @@ const SellerSupport = () => {
               rows={4}
               className="w-full bg-muted rounded-lg px-3 py-2.5 text-sm font-body text-foreground placeholder:text-muted-foreground outline-none resize-none"
             />
+            <label className="flex items-center gap-2 p-3 border border-dashed border-border rounded-lg text-muted-foreground cursor-pointer hover:border-primary transition-colors">
+              {attachmentFile ? <CheckCircle className="w-4 h-4 text-secondary" /> : <Paperclip className="w-4 h-4" />}
+              <span className="text-xs font-body flex-1">{attachmentFile ? attachmentFile.name : "Attach File (screenshot, document, etc.)"}</span>
+              <input type="file" className="hidden" onChange={(e) => setAttachmentFile(e.target.files?.[0] || null)} />
+            </label>
             <button
               onClick={handleSubmitFeedback}
               disabled={submitting}
               className="w-full gradient-warm text-primary-foreground font-body font-semibold text-sm py-2.5 rounded-lg flex items-center justify-center gap-2 disabled:opacity-60"
             >
-              <Send className="w-4 h-4" />
-              {submitting ? "Submitting..." : "Submit Feedback"}
+              <Save className="w-4 h-4" />
+              {submitting ? "Saving..." : "Save Feedback"}
             </button>
           </div>
 
@@ -172,16 +230,41 @@ const SellerSupport = () => {
               <h3 className="font-display font-semibold text-foreground text-sm">Your Feedback History</h3>
               {feedbackList.map((entry, i) => (
                 <div key={i} className="craft-card p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-body font-semibold text-foreground">{typeLabel(entry.type)}</span>
-                    <span className={`inline-flex items-center gap-1 text-[10px] font-body font-semibold px-2 py-0.5 rounded-full ${
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="w-9 h-9 rounded-full gradient-warm flex items-center justify-center shrink-0">
+                      <span className="text-primary-foreground font-body font-bold text-xs">
+                        {(entry.name || "U").split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-body font-semibold text-foreground text-sm truncate">{entry.name || "Anonymous"}</p>
+                      <p className="text-[10px] text-muted-foreground font-body truncate">{entry.businessName || ""}</p>
+                    </div>
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-body font-semibold px-2 py-0.5 rounded-full shrink-0 ${
                       entry.status === "reviewed" ? "bg-secondary/15 text-secondary" : "bg-accent/15 text-accent"
                     }`}>
                       {entry.status === "reviewed" ? <CheckCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                       {entry.status === "reviewed" ? "Reviewed" : "Submitted"}
                     </span>
                   </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-body font-semibold text-foreground">{typeLabel(entry.type)}</span>
+                  </div>
                   <p className="text-sm font-body text-muted-foreground">{entry.message}</p>
+                  {(entry.logoFile || entry.attachmentFile) && (
+                    <div className="flex flex-wrap gap-2">
+                      {entry.logoFile && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-body text-muted-foreground bg-muted px-2 py-1 rounded-md">
+                          <Upload className="w-3 h-3" /> {entry.logoFile}
+                        </span>
+                      )}
+                      {entry.attachmentFile && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-body text-muted-foreground bg-muted px-2 py-1 rounded-md">
+                          <Paperclip className="w-3 h-3" /> {entry.attachmentFile}
+                        </span>
+                      )}
+                    </div>
+                  )}
                   <div className="flex items-center justify-between">
                     <div className="flex gap-0.5">
                       {[1, 2, 3, 4, 5].map((s) => (
