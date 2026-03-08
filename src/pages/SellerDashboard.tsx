@@ -8,6 +8,7 @@ import {
   Crown,
   HeadphonesIcon,
   ShoppingBag,
+  Gift,
 } from "lucide-react";
 import { useOrderStore } from "@/store/orderStore";
 
@@ -19,6 +20,14 @@ const sellerFeatures = [
     path: "/seller/custom-orders",
     gradient: "gradient-warm",
     showBadge: true,
+  },
+  {
+    icon: Gift,
+    title: "Gift Products",
+    desc: "Manage gift items & custom requests",
+    path: "/seller/gift-products",
+    gradient: "gradient-warm",
+    showGiftBadge: true,
   },
   {
     icon: Package,

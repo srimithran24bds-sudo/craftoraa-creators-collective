@@ -30,11 +30,12 @@ const designStylesByCategory: Record<string, { name: string; desc: string }[]> =
     { name: "Artistic", desc: "Abstract aesthetic textile art" },
   ],
   gifts: [
-    { name: "Aesthetic", desc: "Soft tones with elegant finish" },
-    { name: "Festive", desc: "Bright celebration-ready look" },
+    { name: "Aesthetic", desc: "Soft pastel tones with elegant finish" },
+    { name: "Floral", desc: "Flower patterns & botanical vibes" },
+    { name: "Cute", desc: "Adorable kawaii & fun designs" },
     { name: "Minimal", desc: "Clean lines, subtle beauty" },
     { name: "Vintage", desc: "Classic retro-inspired look" },
-    { name: "Personalized", desc: "Custom name & photo designs" },
+    { name: "Celebration", desc: "Bright festive party-ready style" },
   ],
 };
 
@@ -57,6 +58,9 @@ const nearbyArtisans: Record<string, { name: string; location: string; specialty
   gifts: [
     { name: "WrapJoy Studio", location: "Chennai, 4 km", specialty: "Gift curation & packaging", rating: 4.9 },
     { name: "PaperLove Crafts", location: "Chennai, 7 km", specialty: "Scrapbooks & paper art", rating: 4.8 },
+    { name: "PrintHouse Custom", location: "Chennai, 5 km", specialty: "Custom printing & personalization", rating: 4.6 },
+    { name: "TinyGifts Studio", location: "Chennai, 3 km", specialty: "Keychains, bracelets & small gifts", rating: 4.7 },
+    { name: "CardCraft Workshop", location: "Chennai, 9 km", specialty: "Greeting cards & stickers", rating: 4.5 },
   ],
 };
 
