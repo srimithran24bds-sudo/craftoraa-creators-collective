@@ -39,6 +39,7 @@ const SellerSubscription = () => {
   const [registered, setRegistered] = useState(false);
   const [currentPlan, setCurrentPlan] = useState("Starter");
   const [memberFilter, setMemberFilter] = useState<"all" | "paid" | "free">("all");
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
 
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
