@@ -14,7 +14,153 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      order_notifications: {
+        Row: {
+          created_at: string
+          id: string
+          match_reason: string | null
+          order_id: string
+          responded_at: string | null
+          seller_id: string
+          seller_note: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          match_reason?: string | null
+          order_id: string
+          responded_at?: string | null
+          seller_id: string
+          seller_note?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          match_reason?: string | null
+          order_id?: string
+          responded_at?: string | null
+          seller_id?: string
+          seller_note?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_notifications_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_notifications_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "sellers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string
+          customer_name: string
+          customer_phone: string
+          delivery_address: string
+          delivery_date: string
+          design_style: string | null
+          id: string
+          order_id: string
+          order_status: string
+          payment_method: string | null
+          payment_status: string
+          product_category: string
+          product_name: string
+          product_price: number
+          reference_image: string | null
+          wish_description: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_name: string
+          customer_phone: string
+          delivery_address: string
+          delivery_date: string
+          design_style?: string | null
+          id?: string
+          order_id: string
+          order_status?: string
+          payment_method?: string | null
+          payment_status?: string
+          product_category: string
+          product_name: string
+          product_price: number
+          reference_image?: string | null
+          wish_description?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string
+          customer_phone?: string
+          delivery_address?: string
+          delivery_date?: string
+          design_style?: string | null
+          id?: string
+          order_id?: string
+          order_status?: string
+          payment_method?: string | null
+          payment_status?: string
+          product_category?: string
+          product_name?: string
+          product_price?: number
+          reference_image?: string | null
+          wish_description?: string | null
+        }
+        Relationships: []
+      }
+      sellers: {
+        Row: {
+          business_name: string
+          contact: string
+          craft_type: string
+          created_at: string
+          id: string
+          location: string
+          name: string
+          paid: boolean
+          plan: string
+          skills: string[]
+          social_media: string | null
+        }
+        Insert: {
+          business_name: string
+          contact: string
+          craft_type: string
+          created_at?: string
+          id?: string
+          location: string
+          name: string
+          paid?: boolean
+          plan?: string
+          skills?: string[]
+          social_media?: string | null
+        }
+        Update: {
+          business_name?: string
+          contact?: string
+          craft_type?: string
+          created_at?: string
+          id?: string
+          location?: string
+          name?: string
+          paid?: boolean
+          plan?: string
+          skills?: string[]
+          social_media?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
