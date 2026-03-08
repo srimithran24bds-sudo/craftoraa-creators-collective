@@ -24,7 +24,7 @@ const plans = [
 
 type Subscriber = { name: string; craft: string; plan: string; paid: boolean; joinedDate: string; avatar: string };
 
-const mockSubscribers: Subscriber[] = [];
+
 
 const SellerSubscription = () => {
   const navigate = useNavigate();
