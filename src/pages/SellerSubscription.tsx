@@ -24,7 +24,7 @@ const plans = [
 
 type Subscriber = { name: string; craft: string; plan: string; paid: boolean; joinedDate: string; avatar: string };
 
-const mockSubscribers: Subscriber[] = [];
+
 
 const SellerSubscription = () => {
   const navigate = useNavigate();
@@ -39,6 +39,7 @@ const SellerSubscription = () => {
   const [registered, setRegistered] = useState(false);
   const [currentPlan, setCurrentPlan] = useState("Starter");
   const [memberFilter, setMemberFilter] = useState<"all" | "paid" | "free">("all");
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
 
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -57,6 +58,16 @@ const SellerSubscription = () => {
     }
     setSubmitting(true);
     setTimeout(() => {
+      const initials = formData.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+      const newSubscriber: Subscriber = {
+        name: formData.name,
+        craft: formData.craftType,
+        plan: currentPlan,
+        paid: currentPlan !== "Starter",
+        joinedDate: new Date().toISOString().split("T")[0],
+        avatar: initials,
+      };
+      setSubscribers((prev) => [newSubscriber, ...prev]);
       setSubmitting(false);
       setRegistered(true);
       toast({ title: "Welcome to Craftora! 🎉", description: "You've successfully joined the community." });
@@ -72,14 +83,14 @@ const SellerSubscription = () => {
     }, 1500);
   };
 
-  const filteredMembers = mockSubscribers.filter((m) => {
+  const filteredMembers = subscribers.filter((m) => {
     if (memberFilter === "paid") return m.paid;
     if (memberFilter === "free") return !m.paid;
     return true;
   });
 
-  const totalPaid = mockSubscribers.filter((m) => m.paid).length;
-  const totalFree = mockSubscribers.filter((m) => !m.paid).length;
+  const totalPaid = subscribers.filter((m) => m.paid).length;
+  const totalFree = subscribers.filter((m) => !m.paid).length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -195,7 +206,7 @@ const SellerSubscription = () => {
           <div className="grid grid-cols-3 gap-2">
             <div className="craft-card p-3 text-center">
               <Users className="w-5 h-5 text-primary mx-auto mb-1" />
-              <p className="font-display font-bold text-foreground text-lg">{mockSubscribers.length}</p>
+              <p className="font-display font-bold text-foreground text-lg">{subscribers.length}</p>
               <p className="text-[10px] text-muted-foreground font-body">Total</p>
             </div>
             <div className="craft-card p-3 text-center">
