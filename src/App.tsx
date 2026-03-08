@@ -8,9 +8,9 @@ import SellerDashboard from "./pages/SellerDashboard";
 import SellerProducts from "./pages/SellerProducts";
 import SellerConnections from "./pages/SellerConnections";
 import SellerChatbot from "./pages/SellerChatbot";
+import SellerIdeas from "./pages/SellerIdeas";
 import SellerSubscription from "./pages/SellerSubscription";
 import SellerSupport from "./pages/SellerSupport";
-import SellerFeedback from "./pages/SellerFeedback";
 import CustomerBrowse from "./pages/CustomerBrowse";
 import CategoryPage from "./pages/CategoryPage";
 import NotFound from "./pages/NotFound";
@@ -29,9 +29,9 @@ const App = () => (
           <Route path="/seller/products" element={<SellerProducts />} />
           <Route path="/seller/connections" element={<SellerConnections />} />
           <Route path="/seller/chatbot" element={<SellerChatbot />} />
+          <Route path="/seller/ideas" element={<SellerIdeas />} />
           <Route path="/seller/subscription" element={<SellerSubscription />} />
           <Route path="/seller/support" element={<SellerSupport />} />
-          <Route path="/seller/feedback" element={<SellerFeedback />} />
           <Route path="/customer" element={<CustomerBrowse />} />
           <Route path="/customer/:category" element={<CategoryPage />} />
           <Route path="*" element={<NotFound />} />
