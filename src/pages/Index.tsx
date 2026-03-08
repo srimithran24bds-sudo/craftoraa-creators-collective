@@ -89,7 +89,7 @@ const Index = () => {
       {/* Featured Section */}
       <section className="px-4 pb-8">
         <h3 className="text-lg font-display font-semibold text-foreground mb-4">
-          Why Craftoraa?
+          Why Craftora?
         </h3>
         <div className="space-y-3">
           {[
