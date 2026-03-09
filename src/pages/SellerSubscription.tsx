@@ -204,13 +204,10 @@ const SellerSubscription = () => {
                 {plan.popular && (
                   <span className="absolute -top-2.5 left-4 px-2.5 py-0.5 gradient-warm text-primary-foreground text-xs font-body font-semibold rounded-full">Popular</span>
                 )}
-                <div className="flex items-baseline justify-between mb-1">
+                <div className="flex items-baseline justify-between mb-3">
                   <h4 className="font-display font-bold text-foreground text-lg">{plan.name}</h4>
                   <span className="font-body font-bold text-primary text-lg">{plan.price}</span>
                 </div>
-                {"subtitle" in plan && plan.subtitle && (
-                  <p className="text-xs font-body font-semibold text-primary/80 mb-3">{plan.subtitle}</p>
-                )}
                 <ul className="space-y-2 mb-4">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2 text-sm font-body text-foreground">
