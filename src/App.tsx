@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import AuthGuard from "@/components/AuthGuard";
+import Auth from "./pages/Auth";
 import Index from "./pages/Index";
 import SellerDashboard from "./pages/SellerDashboard";
 import SellerProducts from "./pages/SellerProducts";
@@ -34,24 +36,25 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/seller" element={<SellerDashboard />} />
-            <Route path="/seller/products" element={<SellerProducts />} />
-            <Route path="/seller/connections" element={<SellerConnections />} />
-            <Route path="/seller/chatbot" element={<SellerChatbot />} />
-            <Route path="/seller/ideas" element={<SellerIdeas />} />
-            <Route path="/seller/subscription" element={<SellerSubscription />} />
-            <Route path="/seller/subscription/payment" element={<SubscriptionPayment />} />
-            <Route path="/seller/support" element={<SellerSupport />} />
-            <Route path="/seller/custom-orders" element={<SellerCustomOrders />} />
-            <Route path="/seller/gift-products" element={<SellerGiftProducts />} />
-            <Route path="/seller/notifications" element={<SellerNotifications />} />
-            <Route path="/customer" element={<CustomerBrowse />} />
-            <Route path="/customer/:category" element={<CategoryPage />} />
-            <Route path="/customer/:category/:productSlug" element={<ProductCustomize />} />
-            <Route path="/order/:category/:productSlug" element={<OrderConfirmation />} />
-            <Route path="/payment/:category/:productSlug" element={<PaymentPage />} />
-            <Route path="/order-summary" element={<OrderSummary />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/" element={<AuthGuard><Index /></AuthGuard>} />
+            <Route path="/seller" element={<AuthGuard><SellerDashboard /></AuthGuard>} />
+            <Route path="/seller/products" element={<AuthGuard><SellerProducts /></AuthGuard>} />
+            <Route path="/seller/connections" element={<AuthGuard><SellerConnections /></AuthGuard>} />
+            <Route path="/seller/chatbot" element={<AuthGuard><SellerChatbot /></AuthGuard>} />
+            <Route path="/seller/ideas" element={<AuthGuard><SellerIdeas /></AuthGuard>} />
+            <Route path="/seller/subscription" element={<AuthGuard><SellerSubscription /></AuthGuard>} />
+            <Route path="/seller/subscription/payment" element={<AuthGuard><SubscriptionPayment /></AuthGuard>} />
+            <Route path="/seller/support" element={<AuthGuard><SellerSupport /></AuthGuard>} />
+            <Route path="/seller/custom-orders" element={<AuthGuard><SellerCustomOrders /></AuthGuard>} />
+            <Route path="/seller/gift-products" element={<AuthGuard><SellerGiftProducts /></AuthGuard>} />
+            <Route path="/seller/notifications" element={<AuthGuard><SellerNotifications /></AuthGuard>} />
+            <Route path="/customer" element={<AuthGuard><CustomerBrowse /></AuthGuard>} />
+            <Route path="/customer/:category" element={<AuthGuard><CategoryPage /></AuthGuard>} />
+            <Route path="/customer/:category/:productSlug" element={<AuthGuard><ProductCustomize /></AuthGuard>} />
+            <Route path="/order/:category/:productSlug" element={<AuthGuard><OrderConfirmation /></AuthGuard>} />
+            <Route path="/payment/:category/:productSlug" element={<AuthGuard><PaymentPage /></AuthGuard>} />
+            <Route path="/order-summary" element={<AuthGuard><OrderSummary /></AuthGuard>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
