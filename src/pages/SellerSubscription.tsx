@@ -18,7 +18,6 @@ const plans = [
   },
   {
     name: "Premium",
-    subtitle: "✨ Luxurious & Elegant",
     price: "₹500/mo",
     features: ["Everything in Pro", "Featured seller badge", "Custom storefront", "Dedicated support"],
   },
