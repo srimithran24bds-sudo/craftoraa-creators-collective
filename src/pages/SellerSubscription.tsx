@@ -273,7 +273,7 @@ const SellerSubscription = () => {
                       member.plan === "Premium" ? "bg-primary/15 text-primary" :
                       member.plan === "Pro" ? "bg-secondary/15 text-secondary" :
                       "bg-muted text-muted-foreground"
-                    }`}>{member.plan === "Premium" ? "✨ Premium · Luxurious & Elegant" : member.plan}</span>
+                    }`}>{member.plan}</span>
                   </div>
                   <p className="text-xs text-muted-foreground font-body">{member.craft}</p>
                 </div>
