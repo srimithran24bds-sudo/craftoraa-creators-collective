@@ -4,6 +4,7 @@ import { ArrowLeft, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useOrderStore } from "@/store/orderStore";
+import NearbySellerMap from "@/components/NearbySellerMap";
 
 const OrderConfirmation = () => {
   const navigate = useNavigate();
