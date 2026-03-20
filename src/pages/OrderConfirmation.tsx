@@ -88,6 +88,11 @@ const OrderConfirmation = () => {
         </div>
       </div>
 
+      {/* Nearby Sellers Map */}
+      <div className="px-4 mb-5">
+        <NearbySellerMap category={category || "resin"} selectedSeller={state.product.seller} />
+      </div>
+
       {/* Customer Details Form */}
       <section className="px-4 space-y-4">
         <h3 className="text-sm font-display font-semibold text-foreground">📋 Your Details</h3>
