@@ -4,6 +4,7 @@ import { ArrowLeft, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useOrderStore } from "@/store/orderStore";
+import NearbySellerMap from "@/components/NearbySellerMap";
 
 const OrderConfirmation = () => {
   const navigate = useNavigate();
@@ -85,6 +86,11 @@ const OrderConfirmation = () => {
             <span className="text-sm font-bold text-primary font-body">₹{state.product.price}</span>
           </div>
         </div>
+      </div>
+
+      {/* Nearby Sellers Map */}
+      <div className="px-4 mb-5">
+        <NearbySellerMap category={category || "resin"} selectedSeller={state.product.seller} />
       </div>
 
       {/* Customer Details Form */}
