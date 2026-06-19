@@ -91,7 +91,8 @@ const SellerSubscription = () => {
         paid: currentPlan !== "Starter", joinedDate: new Date().toISOString().split("T")[0], avatar: initials,
       }, ...prev]);
       setRegistered(true);
-      toast({ title: "Welcome to Craftora! 🎉", description: "You've successfully joined the community." });
+      localStorage.setItem("craftora_seller_subscribed", "true");
+      toast({ title: "Welcome to Craftora! 🎉", description: "Your seller dashboard is now unlocked." });
     } catch {
       toast({ title: "Registration failed", description: "Please try again.", variant: "destructive" });
     } finally {
