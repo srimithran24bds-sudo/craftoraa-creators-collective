@@ -157,7 +157,10 @@ const SellerSubscription = () => {
               <h3 className="font-display font-bold text-foreground text-lg">You're Registered!</h3>
               <p className="text-sm text-muted-foreground font-body">Welcome to the Craftora community, {formData.name}.</p>
               <p className="text-xs text-muted-foreground font-body">Craft Type: {formData.craftType} • {formData.businessName}</p>
-              <button onClick={() => setActiveTab("plans")} className="w-full gradient-warm text-primary-foreground font-body font-semibold text-sm py-3 rounded-lg mt-2">
+              <button onClick={() => navigate("/seller")} className="w-full gradient-warm text-primary-foreground font-body font-semibold text-sm py-3 rounded-lg mt-2">
+                Go to Seller Dashboard
+              </button>
+              <button onClick={() => setActiveTab("plans")} className="w-full bg-muted text-foreground font-body font-semibold text-sm py-2.5 rounded-lg">
                 View Plans & Upgrade
               </button>
             </div>
