@@ -64,6 +64,7 @@ const SubscriptionPayment = () => {
 
     setProcessing(false);
     setPaymentDone(true);
+    localStorage.setItem("craftora_seller_subscribed", "true");
     toast({ title: "Payment Successful! ✅", description: `₹${priceNum} paid via ${selectedMethod?.toUpperCase()}` });
   };
 
