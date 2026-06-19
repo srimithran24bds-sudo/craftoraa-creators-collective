@@ -89,8 +89,14 @@ const SubscriptionPayment = () => {
             </p>
           </div>
           <button
-            onClick={() => navigate("/seller/subscription")}
+            onClick={() => navigate("/seller")}
             className="w-full gradient-warm text-primary-foreground font-body font-semibold text-sm py-3 rounded-lg"
+          >
+            Go to Seller Dashboard
+          </button>
+          <button
+            onClick={() => navigate("/seller/subscription")}
+            className="w-full bg-muted text-foreground font-body font-semibold text-sm py-2.5 rounded-lg"
           >
             Back to Subscription
           </button>
