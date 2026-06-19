@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import {
   ArrowLeft, Package, Users, Bot, Lightbulb, Crown, HeadphonesIcon, ShoppingBag, Gift, Bell,
 } from "lucide-react";
@@ -10,6 +11,14 @@ const SellerDashboard = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const pendingCount = useOrderStore((s) => s.orders.filter((o) => o.status === "pending").length);
+  const [subscribed, setSubscribed] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    setSubscribed(localStorage.getItem("craftora_seller_subscribed") === "true");
+  }, []);
+
+  if (subscribed === null) return null;
+  if (!subscribed) return <Navigate to="/seller/subscription" replace />;
 
   const sellerFeatures = [
     { icon: Bell, title: t("seller.orderRequests"), desc: t("seller.orderRequestsDesc"), path: "/seller/notifications", gradient: "gradient-warm", showBadge: true },

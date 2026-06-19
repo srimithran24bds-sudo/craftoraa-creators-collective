@@ -91,7 +91,8 @@ const SellerSubscription = () => {
         paid: currentPlan !== "Starter", joinedDate: new Date().toISOString().split("T")[0], avatar: initials,
       }, ...prev]);
       setRegistered(true);
-      toast({ title: "Welcome to Craftora! 🎉", description: "You've successfully joined the community." });
+      localStorage.setItem("craftora_seller_subscribed", "true");
+      toast({ title: "Welcome to Craftora! 🎉", description: "Your seller dashboard is now unlocked." });
     } catch {
       toast({ title: "Registration failed", description: "Please try again.", variant: "destructive" });
     } finally {
@@ -120,7 +121,7 @@ const SellerSubscription = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="px-4 py-4 flex items-center gap-3">
-        <button onClick={() => navigate("/seller")} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
+        <button onClick={() => navigate("/")} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
         <Crown className="w-6 h-6 text-primary" />
@@ -156,7 +157,10 @@ const SellerSubscription = () => {
               <h3 className="font-display font-bold text-foreground text-lg">You're Registered!</h3>
               <p className="text-sm text-muted-foreground font-body">Welcome to the Craftora community, {formData.name}.</p>
               <p className="text-xs text-muted-foreground font-body">Craft Type: {formData.craftType} • {formData.businessName}</p>
-              <button onClick={() => setActiveTab("plans")} className="w-full gradient-warm text-primary-foreground font-body font-semibold text-sm py-3 rounded-lg mt-2">
+              <button onClick={() => navigate("/seller")} className="w-full gradient-warm text-primary-foreground font-body font-semibold text-sm py-3 rounded-lg mt-2">
+                Go to Seller Dashboard
+              </button>
+              <button onClick={() => setActiveTab("plans")} className="w-full bg-muted text-foreground font-body font-semibold text-sm py-2.5 rounded-lg">
                 View Plans & Upgrade
               </button>
             </div>
