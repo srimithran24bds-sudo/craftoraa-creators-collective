@@ -41,6 +41,25 @@ const SellerSubscription = () => {
   const [currentPlan, setCurrentPlan] = useState("Starter");
   const [memberFilter, setMemberFilter] = useState<"all" | "paid" | "free">("all");
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+  const ADMIN_PASSCODE = "craftora-admin";
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => sessionStorage.getItem("craftora_admin") === "true");
+  const [adminInput, setAdminInput] = useState("");
+
+  const handleAdminUnlock = () => {
+    if (adminInput.trim() === ADMIN_PASSCODE) {
+      sessionStorage.setItem("craftora_admin", "true");
+      setIsAdmin(true);
+      setAdminInput("");
+      toast({ title: "Admin access granted", description: "You can now view registered members." });
+    } else {
+      toast({ title: "Incorrect passcode", description: "Please try again.", variant: "destructive" });
+    }
+  };
+
+  const handleAdminLogout = () => {
+    sessionStorage.removeItem("craftora_admin");
+    setIsAdmin(false);
+  };
 
   // Load sellers from database
   useEffect(() => {
