@@ -250,67 +250,108 @@ const SellerSubscription = () => {
       {/* Members Tab */}
       {activeTab === "members" && (
         <section className="px-4 pb-8 space-y-4">
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-2">
-            <div className="craft-card p-3 text-center">
-              <Users className="w-5 h-5 text-primary mx-auto mb-1" />
-              <p className="font-display font-bold text-foreground text-lg">{subscribers.length}</p>
-              <p className="text-[10px] text-muted-foreground font-body">Total</p>
-            </div>
-            <div className="craft-card p-3 text-center">
-              <CreditCard className="w-5 h-5 text-secondary mx-auto mb-1" />
-              <p className="font-display font-bold text-foreground text-lg">{totalPaid}</p>
-              <p className="text-[10px] text-muted-foreground font-body">Paid</p>
-            </div>
-            <div className="craft-card p-3 text-center">
-              <Clock className="w-5 h-5 text-accent mx-auto mb-1" />
-              <p className="font-display font-bold text-foreground text-lg">{totalFree}</p>
-              <p className="text-[10px] text-muted-foreground font-body">Free</p>
-            </div>
-          </div>
-
-          {/* Filter */}
-          <div className="flex gap-2">
-            {(["all", "paid", "free"] as const).map((f) => (
+          {!isAdmin ? (
+            <div className="craft-card p-6 text-center space-y-4">
+              <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mx-auto">
+                <Lock className="w-7 h-7 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-display font-bold text-foreground text-base">Admin Access Required</h3>
+                <p className="text-xs text-muted-foreground font-body mt-1">
+                  Member details are private. Enter the admin passcode to view registered sellers.
+                </p>
+              </div>
+              <input
+                type="password"
+                placeholder="Enter admin passcode"
+                value={adminInput}
+                onChange={(e) => setAdminInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleAdminUnlock()}
+                className="w-full bg-muted rounded-lg px-3 py-2.5 text-sm font-body text-foreground placeholder:text-muted-foreground outline-none text-center"
+              />
               <button
-                key={f}
-                onClick={() => setMemberFilter(f)}
-                className={`flex-1 py-2 rounded-lg text-xs font-body font-semibold capitalize transition-colors ${memberFilter === f ? "gradient-warm text-primary-foreground" : "bg-muted text-muted-foreground"}`}
+                onClick={handleAdminUnlock}
+                className="w-full gradient-warm text-primary-foreground font-body font-semibold text-sm py-2.5 rounded-lg"
               >
-                {f === "all" ? "All Members" : f === "paid" ? "Paid" : "Free Plan"}
+                Unlock Members
               </button>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <>
+              <div className="craft-card p-3 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-secondary" />
+                <p className="text-xs font-body text-foreground flex-1">Admin mode active</p>
+                <button onClick={handleAdminLogout} className="text-[10px] font-body text-muted-foreground flex items-center gap-1">
+                  <LogOut className="w-3 h-3" /> Lock
+                </button>
+              </div>
 
-          {/* Member List */}
-          <div className="space-y-2">
-            {filteredMembers.map((member, i) => (
-              <div key={i} className="craft-card p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full gradient-warm flex items-center justify-center shrink-0">
-                  <span className="text-primary-foreground font-body font-bold text-xs">{member.avatar}</span>
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-2">
+                <div className="craft-card p-3 text-center">
+                  <Users className="w-5 h-5 text-primary mx-auto mb-1" />
+                  <p className="font-display font-bold text-foreground text-lg">{subscribers.length}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">Total</p>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h4 className="font-body font-semibold text-foreground text-sm truncate">{member.name}</h4>
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-body font-semibold ${
-                      member.plan === "Premium" ? "bg-primary/15 text-primary" :
-                      member.plan === "Pro" ? "bg-secondary/15 text-secondary" :
-                      "bg-muted text-muted-foreground"
-                    }`}>{member.plan}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground font-body">{member.craft}</p>
+                <div className="craft-card p-3 text-center">
+                  <CreditCard className="w-5 h-5 text-secondary mx-auto mb-1" />
+                  <p className="font-display font-bold text-foreground text-lg">{totalPaid}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">Paid</p>
                 </div>
-                <div className="text-right shrink-0">
-                  <span className={`inline-flex items-center gap-1 text-[10px] font-body font-semibold px-2 py-1 rounded-full ${
-                    member.paid ? "bg-secondary/15 text-secondary" : "bg-muted text-muted-foreground"
-                  }`}>
-                    {member.paid ? <><CreditCard className="w-3 h-3" /> Paid</> : "Free"}
-                  </span>
-                  <p className="text-[10px] text-muted-foreground font-body mt-1">{new Date(member.joinedDate).toLocaleDateString("en-IN", { month: "short", day: "numeric" })}</p>
+                <div className="craft-card p-3 text-center">
+                  <Clock className="w-5 h-5 text-accent mx-auto mb-1" />
+                  <p className="font-display font-bold text-foreground text-lg">{totalFree}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">Free</p>
                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Filter */}
+              <div className="flex gap-2">
+                {(["all", "paid", "free"] as const).map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setMemberFilter(f)}
+                    className={`flex-1 py-2 rounded-lg text-xs font-body font-semibold capitalize transition-colors ${memberFilter === f ? "gradient-warm text-primary-foreground" : "bg-muted text-muted-foreground"}`}
+                  >
+                    {f === "all" ? "All Members" : f === "paid" ? "Paid" : "Free Plan"}
+                  </button>
+                ))}
+              </div>
+
+              {/* Member List */}
+              <div className="space-y-2">
+                {filteredMembers.length === 0 && (
+                  <p className="text-center text-xs text-muted-foreground font-body py-6">No members yet.</p>
+                )}
+                {filteredMembers.map((member, i) => (
+                  <div key={i} className="craft-card p-4 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full gradient-warm flex items-center justify-center shrink-0">
+                      <span className="text-primary-foreground font-body font-bold text-xs">{member.avatar}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-body font-semibold text-foreground text-sm truncate">{member.name}</h4>
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-body font-semibold ${
+                          member.plan === "Premium" ? "bg-primary/15 text-primary" :
+                          member.plan === "Pro" ? "bg-secondary/15 text-secondary" :
+                          "bg-muted text-muted-foreground"
+                        }`}>{member.plan}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground font-body">{member.craft}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className={`inline-flex items-center gap-1 text-[10px] font-body font-semibold px-2 py-1 rounded-full ${
+                        member.paid ? "bg-secondary/15 text-secondary" : "bg-muted text-muted-foreground"
+                      }`}>
+                        {member.paid ? <><CreditCard className="w-3 h-3" /> Paid</> : "Free"}
+                      </span>
+                      <p className="text-[10px] text-muted-foreground font-body mt-1">{new Date(member.joinedDate).toLocaleDateString("en-IN", { month: "short", day: "numeric" })}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </section>
       )}
     </div>
