@@ -121,7 +121,7 @@ const SellerSubscription = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="px-4 py-4 flex items-center gap-3">
-        <button onClick={() => navigate("/seller")} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
+        <button onClick={() => navigate("/")} className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </button>
         <Crown className="w-6 h-6 text-primary" />
