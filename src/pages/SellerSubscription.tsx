@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, Crown, User, Upload, Users, CreditCard, Clock, Lock, ShieldCheck, LogOut } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { registerSeller, fetchSellers } from "@/lib/orderService";
+import { supabase } from "@/integrations/supabase/client";
 
 const plans = [
   {
@@ -61,20 +62,37 @@ const SellerSubscription = () => {
     setIsAdmin(false);
   };
 
-  // Load sellers from database
+  // Load sellers from database + subscribe to realtime changes
   useEffect(() => {
-    fetchSellers().then((sellers) => {
-      setSubscribers(
-        sellers.map((s: any) => ({
-          name: s.name,
-          craft: s.craft_type,
-          plan: s.plan,
-          paid: s.paid,
-          joinedDate: s.created_at?.split("T")[0] || "",
-          avatar: s.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2),
-        }))
-      );
-    }).catch(() => {});
+    const mapSeller = (s: any) => ({
+      name: s.name,
+      craft: s.craft_type,
+      plan: s.plan,
+      paid: s.paid,
+      joinedDate: s.created_at?.split("T")[0] || "",
+      avatar: s.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2),
+    });
+
+    const load = () => {
+      fetchSellers().then((sellers) => {
+        setSubscribers(sellers.map(mapSeller));
+      }).catch(() => {});
+    };
+
+    load();
+
+    const channel = supabase
+      .channel("sellers-members")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "sellers" },
+        () => load()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const updateField = (field: string, value: string) => {
