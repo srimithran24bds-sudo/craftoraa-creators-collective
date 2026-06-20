@@ -1,11 +1,13 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Star, Heart, Palette } from "lucide-react";
+import { ArrowLeft, Star, Heart, Palette, Sparkles } from "lucide-react";
 import categoryResin from "@/assets/category-resin.jpg";
 import categoryHomeDecor from "@/assets/category-homedecor.jpg";
 import categoryTextile from "@/assets/category-textile.jpg";
 import categoryGifts from "@/assets/category-gifts.jpg";
 import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const categoryData: Record<string, {
   title: string;
@@ -128,11 +130,46 @@ const categoryTitleKeys: Record<string, string> = {
   gifts: "cat.gifts",
 };
 
+interface SellerProduct {
+  id: string;
+  name: string;
+  price: number;
+  category: string;
+  description: string | null;
+  image_url: string | null;
+  seller_name: string;
+}
+
 const CategoryPage = () => {
   const navigate = useNavigate();
   const { category } = useParams();
   const { t } = useLanguage();
   const data = categoryData[category || "resin"];
+  const [sellerProducts, setSellerProducts] = useState<SellerProduct[]>([]);
+
+  useEffect(() => {
+    if (!category) return;
+    const load = async () => {
+      const { data: rows } = await supabase
+        .from("seller_products")
+        .select("*")
+        .eq("category", category)
+        .order("created_at", { ascending: false });
+      setSellerProducts((rows || []) as SellerProduct[]);
+    };
+    load();
+    const channel = supabase
+      .channel(`seller-products-${category}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "seller_products", filter: `category=eq.${category}` },
+        () => load()
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [category]);
 
   if (!data) return null;
 
@@ -152,7 +189,50 @@ const CategoryPage = () => {
         <img src={data.image} alt={data.title} className="w-full h-36 object-cover rounded-xl" />
       </div>
 
+      {sellerProducts.length > 0 && (
+        <div className="px-4 pb-2 flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-primary" />
+          <h2 className="text-sm font-display font-semibold text-foreground">Fresh from our artisans</h2>
+        </div>
+      )}
+
       <section className="px-4 pb-8 grid grid-cols-2 gap-3">
+        {sellerProducts.map((p) => {
+          const slug = `seller-${p.id}`;
+          return (
+            <button
+              key={p.id}
+              onClick={() => navigate(`/customer/${category}/${slug}`)}
+              className="craft-card overflow-hidden text-left"
+            >
+              <div className="h-28 bg-muted relative overflow-hidden">
+                {p.image_url ? (
+                  <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs font-body">No image</div>
+                )}
+                <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-secondary/90 flex items-center gap-0.5">
+                  <Sparkles className="w-3 h-3 text-secondary-foreground" />
+                  <span className="text-[9px] font-semibold text-secondary-foreground font-body">New</span>
+                </span>
+                <span className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 flex items-center justify-center">
+                  <Heart className="w-4 h-4 text-muted-foreground" />
+                </span>
+              </div>
+              <div className="p-3">
+                <h4 className="font-body font-semibold text-foreground text-xs truncate">{p.name}</h4>
+                <p className="text-[10px] text-muted-foreground font-body line-clamp-2 mt-0.5">
+                  {p.description || `Handmade by ${p.seller_name}`}
+                </p>
+                <div className="flex items-center justify-between mt-1.5">
+                  <span className="text-sm font-bold text-primary font-body">₹{p.price}</span>
+                  <span className="text-[10px] text-muted-foreground font-body truncate ml-2">{p.seller_name}</span>
+                </div>
+              </div>
+            </button>
+          );
+        })}
+
         {data.products.map((p, i) => (
           <button
             key={i}
