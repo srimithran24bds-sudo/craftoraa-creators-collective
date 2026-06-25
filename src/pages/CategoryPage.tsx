@@ -5,6 +5,16 @@ import categoryResin from "@/assets/category-resin.jpg";
 import categoryHomeDecor from "@/assets/category-homedecor.jpg";
 import categoryTextile from "@/assets/category-textile.jpg";
 import categoryGifts from "@/assets/category-gifts.jpg";
+import categoryCrochet from "@/assets/category-crochet.jpg";
+import categoryAari from "@/assets/category-aari.jpg";
+import categoryEmbroidery from "@/assets/category-embroidery.jpg";
+import categoryCandle from "@/assets/category-candle.jpg";
+import categoryPottery from "@/assets/category-pottery.jpg";
+import categoryQuilling from "@/assets/category-quilling.jpg";
+import categoryPhotoFrames from "@/assets/category-photoframes.jpg";
+import categoryRawMaterials from "@/assets/category-rawmaterials.jpg";
+import categoryHandmadeBags from "@/assets/category-handmadebags.jpg";
+
 import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
