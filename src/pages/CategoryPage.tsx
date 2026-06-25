@@ -5,6 +5,16 @@ import categoryResin from "@/assets/category-resin.jpg";
 import categoryHomeDecor from "@/assets/category-homedecor.jpg";
 import categoryTextile from "@/assets/category-textile.jpg";
 import categoryGifts from "@/assets/category-gifts.jpg";
+import categoryCrochet from "@/assets/category-crochet.jpg";
+import categoryAari from "@/assets/category-aari.jpg";
+import categoryEmbroidery from "@/assets/category-embroidery.jpg";
+import categoryCandle from "@/assets/category-candle.jpg";
+import categoryPottery from "@/assets/category-pottery.jpg";
+import categoryQuilling from "@/assets/category-quilling.jpg";
+import categoryPhotoFrames from "@/assets/category-photoframes.jpg";
+import categoryRawMaterials from "@/assets/category-rawmaterials.jpg";
+import categoryHandmadeBags from "@/assets/category-handmadebags.jpg";
+
 import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -120,15 +130,16 @@ const categoryData: Record<string, {
     ],
   },
 
-  crochet: { title: "Crochet", image: categoryTextile, products: [] },
-  aari: { title: "Aari", image: categoryTextile, products: [] },
-  embroidery: { title: "Embroidery", image: categoryTextile, products: [] },
-  candle: { title: "Candle", image: categoryGifts, products: [] },
-  pottery: { title: "Pottery", image: categoryHomeDecor, products: [] },
-  quilling: { title: "Quilling", image: categoryGifts, products: [] },
-  photoframes: { title: "Photo Frames", image: categoryGifts, products: [] },
-  rawmaterials: { title: "Raw Materials", image: categoryHomeDecor, products: [] },
-  handmadebags: { title: "Handmade Bags", image: categoryTextile, products: [] },
+  crochet: { title: "Crochet", image: categoryCrochet, products: [] },
+  aari: { title: "Aari", image: categoryAari, products: [] },
+  embroidery: { title: "Embroidery", image: categoryEmbroidery, products: [] },
+  candle: { title: "Candle", image: categoryCandle, products: [] },
+  pottery: { title: "Pottery", image: categoryPottery, products: [] },
+  quilling: { title: "Quilling", image: categoryQuilling, products: [] },
+  photoframes: { title: "Photo Frames", image: categoryPhotoFrames, products: [] },
+  rawmaterials: { title: "Raw Materials", image: categoryRawMaterials, products: [] },
+  handmadebags: { title: "Handmade Bags", image: categoryHandmadeBags, products: [] },
+
 };
 
 
