@@ -21,17 +21,18 @@ const CustomerBrowse = () => {
 
   const categories = [
     { title: "Resin Products", desc: "Handcrafted resin art & accessories", image: categoryResin, path: "/customer/resin" },
-    { title: "Crochet", desc: "Handmade crochet creations", image: categoryTextile, path: "/customer/crochet" },
-    { title: "Aari", desc: "Traditional aari embroidery work", image: categoryTextile, path: "/customer/aari" },
-    { title: "Embroidery", desc: "Intricate hand embroidery", image: categoryTextile, path: "/customer/embroidery" },
-    { title: "Candle", desc: "Artisan handmade candles", image: categoryGifts, path: "/customer/candle" },
-    { title: "Pottery", desc: "Hand-thrown clay & ceramic pottery", image: categoryHomeDecor, path: "/customer/pottery" },
-    { title: "Quilling", desc: "Delicate paper quilling art", image: categoryGifts, path: "/customer/quilling" },
-    { title: "Photo Frames", desc: "Custom decorated photo frames", image: categoryGifts, path: "/customer/photoframes" },
-    { title: "Raw Materials", desc: "Craft supplies for artisans", image: categoryHomeDecor, path: "/customer/rawmaterials" },
+    { title: "Crochet", desc: "Handmade crochet creations", image: categoryCrochet, path: "/customer/crochet" },
+    { title: "Aari", desc: "Traditional aari embroidery work", image: categoryAari, path: "/customer/aari" },
+    { title: "Embroidery", desc: "Intricate hand embroidery", image: categoryEmbroidery, path: "/customer/embroidery" },
+    { title: "Candle", desc: "Artisan handmade candles", image: categoryCandle, path: "/customer/candle" },
+    { title: "Pottery", desc: "Hand-thrown clay & ceramic pottery", image: categoryPottery, path: "/customer/pottery" },
+    { title: "Quilling", desc: "Delicate paper quilling art", image: categoryQuilling, path: "/customer/quilling" },
+    { title: "Photo Frames", desc: "Custom decorated photo frames", image: categoryPhotoFrames, path: "/customer/photoframes" },
+    { title: "Raw Materials", desc: "Craft supplies for artisans", image: categoryRawMaterials, path: "/customer/rawmaterials" },
     { title: "Home Decor", desc: "Handmade decor for your space", image: categoryHomeDecor, path: "/customer/homedecor" },
-    { title: "Handmade Bags", desc: "Stylish handcrafted bags", image: categoryTextile, path: "/customer/handmadebags" },
+    { title: "Handmade Bags", desc: "Stylish handcrafted bags", image: categoryHandmadeBags, path: "/customer/handmadebags" },
   ];
+
 
 
   return (
