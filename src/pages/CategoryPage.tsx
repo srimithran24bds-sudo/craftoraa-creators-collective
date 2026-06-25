@@ -119,7 +119,18 @@ const categoryData: Record<string, {
       { name: "Anniversary Gift Sets", price: 1299, seller: "WrapJoy", rating: 4.9, description: "Romantic curated anniversary gift sets for couples.", slug: "anniversary-sets", image: "https://images.unsplash.com/photo-1549465220-1a8b9238f786?w=400&h=300&fit=crop" },
     ],
   },
+
+  crochet: { title: "Crochet", image: categoryTextile, products: [] },
+  aari: { title: "Aari", image: categoryTextile, products: [] },
+  embroidery: { title: "Embroidery", image: categoryTextile, products: [] },
+  candle: { title: "Candle", image: categoryGifts, products: [] },
+  pottery: { title: "Pottery", image: categoryHomeDecor, products: [] },
+  quilling: { title: "Quilling", image: categoryGifts, products: [] },
+  photoframes: { title: "Photo Frames", image: categoryGifts, products: [] },
+  rawmaterials: { title: "Raw Materials", image: categoryHomeDecor, products: [] },
+  handmadebags: { title: "Handmade Bags", image: categoryTextile, products: [] },
 };
+
 
 export { categoryData };
 

@@ -12,11 +12,19 @@ const CustomerBrowse = () => {
   const { t } = useLanguage();
 
   const categories = [
-    { title: t("cat.resin"), desc: t("cat.resinDesc"), image: categoryResin, path: "/customer/resin" },
-    { title: t("cat.homedecor"), desc: t("cat.homedecorDesc"), image: categoryHomeDecor, path: "/customer/homedecor" },
-    { title: t("cat.textile"), desc: t("cat.textileDesc"), image: categoryTextile, path: "/customer/textile" },
-    { title: t("cat.gifts"), desc: t("cat.giftsDesc"), image: categoryGifts, path: "/customer/gifts" },
+    { title: "Resin Products", desc: "Handcrafted resin art & accessories", image: categoryResin, path: "/customer/resin" },
+    { title: "Crochet", desc: "Handmade crochet creations", image: categoryTextile, path: "/customer/crochet" },
+    { title: "Aari", desc: "Traditional aari embroidery work", image: categoryTextile, path: "/customer/aari" },
+    { title: "Embroidery", desc: "Intricate hand embroidery", image: categoryTextile, path: "/customer/embroidery" },
+    { title: "Candle", desc: "Artisan handmade candles", image: categoryGifts, path: "/customer/candle" },
+    { title: "Pottery", desc: "Hand-thrown clay & ceramic pottery", image: categoryHomeDecor, path: "/customer/pottery" },
+    { title: "Quilling", desc: "Delicate paper quilling art", image: categoryGifts, path: "/customer/quilling" },
+    { title: "Photo Frames", desc: "Custom decorated photo frames", image: categoryGifts, path: "/customer/photoframes" },
+    { title: "Raw Materials", desc: "Craft supplies for artisans", image: categoryHomeDecor, path: "/customer/rawmaterials" },
+    { title: "Home Decor", desc: "Handmade decor for your space", image: categoryHomeDecor, path: "/customer/homedecor" },
+    { title: "Handmade Bags", desc: "Stylish handcrafted bags", image: categoryTextile, path: "/customer/handmadebags" },
   ];
+
 
   return (
     <div className="min-h-screen bg-background">
