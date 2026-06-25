@@ -117,7 +117,9 @@ const categoryData: Record<string, {
       { name: "Wedding Return Gifts", price: 299, seller: "WrapJoy", rating: 4.8, description: "Elegant handmade return gifts for wedding guests.", slug: "wedding-return-gifts", image: "https://images.unsplash.com/photo-1549465220-1a8b9238f786?w=400&h=300&fit=crop" },
       { name: "Birthday Gift Kits", price: 899, seller: "WrapJoy", rating: 4.9, description: "Complete birthday surprise kits with cards, treats & gifts.", slug: "birthday-kits", image: "https://images.unsplash.com/photo-1549465220-1a8b9238f786?w=400&h=300&fit=crop" },
       { name: "Anniversary Gift Sets", price: 1299, seller: "WrapJoy", rating: 4.9, description: "Romantic curated anniversary gift sets for couples.", slug: "anniversary-sets", image: "https://images.unsplash.com/photo-1549465220-1a8b9238f786?w=400&h=300&fit=crop" },
+    ],
   },
+
   crochet: { title: "Crochet", image: categoryTextile, products: [] },
   aari: { title: "Aari", image: categoryTextile, products: [] },
   embroidery: { title: "Embroidery", image: categoryTextile, products: [] },
