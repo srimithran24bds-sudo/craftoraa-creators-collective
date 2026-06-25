@@ -233,36 +233,12 @@ const CategoryPage = () => {
           );
         })}
 
-        {data.products.map((p, i) => (
-          <button
-            key={i}
-            onClick={() => navigate(`/customer/${category}/${p.slug}`)}
-            className="craft-card overflow-hidden text-left"
-          >
-            <div className="h-28 bg-muted relative overflow-hidden flex items-center justify-center">
-              <Palette className="w-8 h-8 text-muted-foreground/40" />
+        {sellerProducts.length === 0 && (
+          <div className="col-span-2 text-center py-12">
+            <p className="text-sm text-muted-foreground font-body">No products yet in this category.</p>
+          </div>
+        )}
 
-              <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-primary/90 flex items-center gap-0.5">
-                <Palette className="w-3 h-3 text-primary-foreground" />
-                <span className="text-[9px] font-semibold text-primary-foreground font-body">{t("cat.customOrder")}</span>
-              </span>
-              <span className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 flex items-center justify-center">
-                <Heart className="w-4 h-4 text-muted-foreground" />
-              </span>
-            </div>
-            <div className="p-3">
-              <h4 className="font-body font-semibold text-foreground text-xs truncate">{p.name}</h4>
-              <p className="text-[10px] text-muted-foreground font-body line-clamp-2 mt-0.5">{p.description}</p>
-              <div className="flex items-center justify-between mt-1.5">
-                <span className="text-sm font-bold text-primary font-body">₹{p.price}</span>
-                <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground font-body">
-                  <Star className="w-3 h-3 text-accent fill-accent" />
-                  {p.rating}
-                </span>
-              </div>
-            </div>
-          </button>
-        ))}
       </section>
     </div>
   );
