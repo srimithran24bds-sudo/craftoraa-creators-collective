@@ -239,8 +239,9 @@ const CategoryPage = () => {
             onClick={() => navigate(`/customer/${category}/${p.slug}`)}
             className="craft-card overflow-hidden text-left"
           >
-            <div className="h-28 bg-muted relative overflow-hidden">
-              <img src={p.image} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
+            <div className="h-28 bg-muted relative overflow-hidden flex items-center justify-center">
+              <Palette className="w-8 h-8 text-muted-foreground/40" />
+
               <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-primary/90 flex items-center gap-0.5">
                 <Palette className="w-3 h-3 text-primary-foreground" />
                 <span className="text-[9px] font-semibold text-primary-foreground font-body">{t("cat.customOrder")}</span>
