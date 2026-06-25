@@ -130,15 +130,16 @@ const categoryData: Record<string, {
     ],
   },
 
-  crochet: { title: "Crochet", image: categoryTextile, products: [] },
-  aari: { title: "Aari", image: categoryTextile, products: [] },
-  embroidery: { title: "Embroidery", image: categoryTextile, products: [] },
-  candle: { title: "Candle", image: categoryGifts, products: [] },
-  pottery: { title: "Pottery", image: categoryHomeDecor, products: [] },
-  quilling: { title: "Quilling", image: categoryGifts, products: [] },
-  photoframes: { title: "Photo Frames", image: categoryGifts, products: [] },
-  rawmaterials: { title: "Raw Materials", image: categoryHomeDecor, products: [] },
-  handmadebags: { title: "Handmade Bags", image: categoryTextile, products: [] },
+  crochet: { title: "Crochet", image: categoryCrochet, products: [] },
+  aari: { title: "Aari", image: categoryAari, products: [] },
+  embroidery: { title: "Embroidery", image: categoryEmbroidery, products: [] },
+  candle: { title: "Candle", image: categoryCandle, products: [] },
+  pottery: { title: "Pottery", image: categoryPottery, products: [] },
+  quilling: { title: "Quilling", image: categoryQuilling, products: [] },
+  photoframes: { title: "Photo Frames", image: categoryPhotoFrames, products: [] },
+  rawmaterials: { title: "Raw Materials", image: categoryRawMaterials, products: [] },
+  handmadebags: { title: "Handmade Bags", image: categoryHandmadeBags, products: [] },
+
 };
 
 
