@@ -15,11 +15,19 @@ interface Product {
 }
 
 const categoryOptions = [
-  { value: "resin", label: "Resin" },
+  { value: "resin", label: "Resin Products" },
+  { value: "crochet", label: "Crochet" },
+  { value: "aari", label: "Aari" },
+  { value: "embroidery", label: "Embroidery" },
+  { value: "candle", label: "Candle" },
+  { value: "pottery", label: "Pottery" },
+  { value: "quilling", label: "Quilling" },
+  { value: "photoframes", label: "Photo Frames" },
+  { value: "rawmaterials", label: "Raw Materials" },
   { value: "homedecor", label: "Home Decor" },
-  { value: "textile", label: "Textile" },
-  { value: "gifts", label: "Gifts" },
+  { value: "handmadebags", label: "Handmade Bags" },
 ];
+
 
 // Compress image to ~600px wide JPEG so it fits comfortably in a text column
 const compressImage = (file: File): Promise<string> =>
