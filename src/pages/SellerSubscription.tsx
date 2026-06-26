@@ -30,7 +30,7 @@ type Subscriber = { name: string; craft: string; plan: string; paid: boolean; jo
 
 const SellerSubscription = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"register" | "plans" | "members">("register");
+  const [activeTab, setActiveTab] = useState<"register" | "plans" | "members" | "visitors">("register");
   const [formData, setFormData] = useState({
     name: "", craftType: "", businessName: "", contact: "", location: "", socialMedia: "",
   });
