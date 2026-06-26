@@ -96,6 +96,29 @@ const SellerSubscription = () => {
     };
   }, []);
 
+  // Load visitor stats when admin enters Visitors tab
+  useEffect(() => {
+    if (!isAdmin || activeTab !== "visitors") return;
+    const loadVisitors = async () => {
+      const { data, count } = await supabase
+        .from("app_visitors")
+        .select("created_at, path, user_agent, visitor_key", { count: "exact" })
+        .order("created_at", { ascending: false })
+        .limit(500);
+      const rows = data || [];
+      const unique = new Set(rows.map((r: any) => r.visitor_key)).size;
+      const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0);
+      const today = rows.filter((r: any) => new Date(r.created_at) >= startOfDay).length;
+      setVisitorStats({ total: count ?? rows.length, unique, today, recent: rows.slice(0, 50) as any });
+    };
+    loadVisitors();
+    const channel = supabase
+      .channel("visitors-admin")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "app_visitors" }, () => loadVisitors())
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [isAdmin, activeTab]);
+
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
