@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, Crown, User, Upload, Users, CreditCard, Clock, Lock, ShieldCheck, LogOut } from "lucide-react";
+import { ArrowLeft, Check, Crown, User, Upload, Users, CreditCard, Clock, Lock, ShieldCheck, LogOut, Eye } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { registerSeller, fetchSellers } from "@/lib/orderService";
 import { supabase } from "@/integrations/supabase/client";
