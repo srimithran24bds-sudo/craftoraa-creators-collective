@@ -58,6 +58,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <VisitorTracker />
           <Routes>
             <Route path="/auth" element={<Auth />} />
             <Route path="/" element={<AuthGuard><Index /></AuthGuard>} />
