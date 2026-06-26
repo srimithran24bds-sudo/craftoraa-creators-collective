@@ -14,6 +14,7 @@ import categoryQuilling from "@/assets/category-quilling.jpg";
 import categoryPhotoFrames from "@/assets/category-photoframes.jpg";
 import categoryRawMaterials from "@/assets/category-rawmaterials.jpg";
 import categoryHandmadeBags from "@/assets/category-handmadebags.jpg";
+import categoryPortrait from "@/assets/category-portrait.jpg";
 
 import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -139,6 +140,7 @@ const categoryData: Record<string, {
   photoframes: { title: "Photo Frames", image: categoryPhotoFrames, products: [] },
   rawmaterials: { title: "Raw Materials", image: categoryRawMaterials, products: [] },
   handmadebags: { title: "Handmade Bags", image: categoryHandmadeBags, products: [] },
+  portrait: { title: "Portrait", image: categoryPortrait, products: [] },
 
 };
 

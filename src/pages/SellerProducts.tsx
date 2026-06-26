@@ -26,6 +26,7 @@ const categoryOptions = [
   { value: "rawmaterials", label: "Raw Materials" },
   { value: "homedecor", label: "Home Decor" },
   { value: "handmadebags", label: "Handmade Bags" },
+  { value: "portrait", label: "Portrait" },
 ];
 
 

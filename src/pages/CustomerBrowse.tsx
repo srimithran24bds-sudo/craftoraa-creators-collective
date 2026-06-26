@@ -11,6 +11,7 @@ import categoryQuilling from "@/assets/category-quilling.jpg";
 import categoryPhotoFrames from "@/assets/category-photoframes.jpg";
 import categoryRawMaterials from "@/assets/category-rawmaterials.jpg";
 import categoryHandmadeBags from "@/assets/category-handmadebags.jpg";
+import categoryPortrait from "@/assets/category-portrait.jpg";
 
 import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -31,6 +32,7 @@ const CustomerBrowse = () => {
     { title: "Raw Materials", desc: "Craft supplies for artisans", image: categoryRawMaterials, path: "/customer/rawmaterials" },
     { title: "Home Decor", desc: "Handmade decor for your space", image: categoryHomeDecor, path: "/customer/homedecor" },
     { title: "Handmade Bags", desc: "Stylish handcrafted bags", image: categoryHandmadeBags, path: "/customer/handmadebags" },
+    { title: "Portrait", desc: "Custom hand-drawn portraits from your photo", image: categoryPortrait, path: "/customer/portrait" },
   ];
 
 
