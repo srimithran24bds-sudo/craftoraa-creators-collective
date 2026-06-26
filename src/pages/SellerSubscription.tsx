@@ -397,6 +397,68 @@ const SellerSubscription = () => {
           )}
         </section>
       )}
+
+      {/* Visitors Tab (admin-only) */}
+      {activeTab === "visitors" && (
+        <section className="px-4 pb-8 space-y-4">
+          {!isAdmin ? (
+            <div className="craft-card p-6 text-center">
+              <Lock className="w-7 h-7 text-primary mx-auto mb-2" />
+              <p className="text-xs font-body text-muted-foreground">Unlock admin from the Members tab to view visitors.</p>
+            </div>
+          ) : (
+            <>
+              <div className="craft-card p-3 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-secondary" />
+                <p className="text-xs font-body text-foreground flex-1">Admin: app visitor analytics</p>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="craft-card p-3 text-center">
+                  <Eye className="w-5 h-5 text-primary mx-auto mb-1" />
+                  <p className="font-display font-bold text-foreground text-lg">{visitorStats.total}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">Total visits</p>
+                </div>
+                <div className="craft-card p-3 text-center">
+                  <Users className="w-5 h-5 text-secondary mx-auto mb-1" />
+                  <p className="font-display font-bold text-foreground text-lg">{visitorStats.unique}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">Unique</p>
+                </div>
+                <div className="craft-card p-3 text-center">
+                  <Clock className="w-5 h-5 text-accent mx-auto mb-1" />
+                  <p className="font-display font-bold text-foreground text-lg">{visitorStats.today}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">Today</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-display font-semibold text-foreground text-sm">Recent visits</h3>
+                {visitorStats.recent.length === 0 && (
+                  <p className="text-center text-xs text-muted-foreground font-body py-6">No visits recorded yet.</p>
+                )}
+                {visitorStats.recent.map((v, i) => {
+                  const ua = v.user_agent || "";
+                  const device = /Mobile|Android|iPhone/i.test(ua) ? "Mobile" : "Desktop";
+                  return (
+                    <div key={i} className="craft-card p-3 flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center shrink-0">
+                        <Eye className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-body font-semibold text-foreground truncate">{v.path || "/"}</p>
+                        <p className="text-[10px] text-muted-foreground font-body truncate">
+                          {device} • Visitor {v.visitor_key.slice(0, 8)}
+                        </p>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground font-body shrink-0">
+                        {new Date(v.created_at).toLocaleString("en-IN", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </section>
+      )}
     </div>
   );
 };
