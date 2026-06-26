@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_visitors: {
+        Row: {
+          created_at: string
+          id: string
+          path: string | null
+          user_agent: string | null
+          visitor_key: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          path?: string | null
+          user_agent?: string | null
+          visitor_key: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          path?: string | null
+          user_agent?: string | null
+          visitor_key?: string
+        }
+        Relationships: []
+      }
       order_notifications: {
         Row: {
           created_at: string

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, Crown, User, Upload, Users, CreditCard, Clock, Lock, ShieldCheck, LogOut } from "lucide-react";
+import { ArrowLeft, Check, Crown, User, Upload, Users, CreditCard, Clock, Lock, ShieldCheck, LogOut, Eye } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { registerSeller, fetchSellers } from "@/lib/orderService";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,7 +30,7 @@ type Subscriber = { name: string; craft: string; plan: string; paid: boolean; jo
 
 const SellerSubscription = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"register" | "plans" | "members">("register");
+  const [activeTab, setActiveTab] = useState<"register" | "plans" | "members" | "visitors">("register");
   const [formData, setFormData] = useState({
     name: "", craftType: "", businessName: "", contact: "", location: "", socialMedia: "",
   });
@@ -45,6 +45,7 @@ const SellerSubscription = () => {
   const ADMIN_PASSCODE = "craftora-admin";
   const [isAdmin, setIsAdmin] = useState<boolean>(() => sessionStorage.getItem("craftora_admin") === "true");
   const [adminInput, setAdminInput] = useState("");
+  const [visitorStats, setVisitorStats] = useState<{ total: number; unique: number; today: number; recent: Array<{ created_at: string; path: string | null; user_agent: string | null; visitor_key: string }> }>({ total: 0, unique: 0, today: 0, recent: [] });
 
   const handleAdminUnlock = () => {
     if (adminInput.trim() === ADMIN_PASSCODE) {
@@ -94,6 +95,29 @@ const SellerSubscription = () => {
       supabase.removeChannel(channel);
     };
   }, []);
+
+  // Load visitor stats when admin enters Visitors tab
+  useEffect(() => {
+    if (!isAdmin || activeTab !== "visitors") return;
+    const loadVisitors = async () => {
+      const { data, count } = await supabase
+        .from("app_visitors")
+        .select("created_at, path, user_agent, visitor_key", { count: "exact" })
+        .order("created_at", { ascending: false })
+        .limit(500);
+      const rows = data || [];
+      const unique = new Set(rows.map((r: any) => r.visitor_key)).size;
+      const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0);
+      const today = rows.filter((r: any) => new Date(r.created_at) >= startOfDay).length;
+      setVisitorStats({ total: count ?? rows.length, unique, today, recent: rows.slice(0, 50) as any });
+    };
+    loadVisitors();
+    const channel = supabase
+      .channel("visitors-admin")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "app_visitors" }, () => loadVisitors())
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [isAdmin, activeTab]);
 
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -171,6 +195,7 @@ const SellerSubscription = () => {
           { key: "register", label: "Register", icon: User },
           { key: "plans", label: "Plans", icon: Crown },
           { key: "members", label: "Members", icon: Users },
+          ...(isAdmin ? [{ key: "visitors" as const, label: "Visitors", icon: Eye }] : []),
         ] as const).map((tab) => (
           <button
             key={tab.key}
@@ -367,6 +392,68 @@ const SellerSubscription = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+            </>
+          )}
+        </section>
+      )}
+
+      {/* Visitors Tab (admin-only) */}
+      {activeTab === "visitors" && (
+        <section className="px-4 pb-8 space-y-4">
+          {!isAdmin ? (
+            <div className="craft-card p-6 text-center">
+              <Lock className="w-7 h-7 text-primary mx-auto mb-2" />
+              <p className="text-xs font-body text-muted-foreground">Unlock admin from the Members tab to view visitors.</p>
+            </div>
+          ) : (
+            <>
+              <div className="craft-card p-3 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-secondary" />
+                <p className="text-xs font-body text-foreground flex-1">Admin: app visitor analytics</p>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div className="craft-card p-3 text-center">
+                  <Eye className="w-5 h-5 text-primary mx-auto mb-1" />
+                  <p className="font-display font-bold text-foreground text-lg">{visitorStats.total}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">Total visits</p>
+                </div>
+                <div className="craft-card p-3 text-center">
+                  <Users className="w-5 h-5 text-secondary mx-auto mb-1" />
+                  <p className="font-display font-bold text-foreground text-lg">{visitorStats.unique}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">Unique</p>
+                </div>
+                <div className="craft-card p-3 text-center">
+                  <Clock className="w-5 h-5 text-accent mx-auto mb-1" />
+                  <p className="font-display font-bold text-foreground text-lg">{visitorStats.today}</p>
+                  <p className="text-[10px] text-muted-foreground font-body">Today</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-display font-semibold text-foreground text-sm">Recent visits</h3>
+                {visitorStats.recent.length === 0 && (
+                  <p className="text-center text-xs text-muted-foreground font-body py-6">No visits recorded yet.</p>
+                )}
+                {visitorStats.recent.map((v, i) => {
+                  const ua = v.user_agent || "";
+                  const device = /Mobile|Android|iPhone/i.test(ua) ? "Mobile" : "Desktop";
+                  return (
+                    <div key={i} className="craft-card p-3 flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center shrink-0">
+                        <Eye className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-body font-semibold text-foreground truncate">{v.path || "/"}</p>
+                        <p className="text-[10px] text-muted-foreground font-body truncate">
+                          {device} • Visitor {v.visitor_key.slice(0, 8)}
+                        </p>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground font-body shrink-0">
+                        {new Date(v.created_at).toLocaleString("en-IN", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </>
           )}
