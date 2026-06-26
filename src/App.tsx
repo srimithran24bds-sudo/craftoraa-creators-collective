@@ -25,8 +25,31 @@ import SellerGiftProducts from "./pages/SellerGiftProducts";
 import SellerNotifications from "./pages/SellerNotifications";
 import SubscriptionPayment from "./pages/SubscriptionPayment";
 import NotFound from "./pages/NotFound";
+import { useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const queryClient = new QueryClient();
+
+const VisitorTracker = () => {
+  useEffect(() => {
+    try {
+      let key = localStorage.getItem("craftora_visitor_key");
+      if (!key) {
+        key = (crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`);
+        localStorage.setItem("craftora_visitor_key", key);
+      }
+      if (!sessionStorage.getItem("craftora_visit_logged")) {
+        sessionStorage.setItem("craftora_visit_logged", "1");
+        supabase.from("app_visitors").insert({
+          visitor_key: key,
+          user_agent: navigator.userAgent,
+          path: window.location.pathname,
+        }).then(() => {});
+      }
+    } catch {}
+  }, []);
+  return null;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
