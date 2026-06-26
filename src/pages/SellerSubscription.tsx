@@ -195,6 +195,7 @@ const SellerSubscription = () => {
           { key: "register", label: "Register", icon: User },
           { key: "plans", label: "Plans", icon: Crown },
           { key: "members", label: "Members", icon: Users },
+          ...(isAdmin ? [{ key: "visitors" as const, label: "Visitors", icon: Eye }] : []),
         ] as const).map((tab) => (
           <button
             key={tab.key}
