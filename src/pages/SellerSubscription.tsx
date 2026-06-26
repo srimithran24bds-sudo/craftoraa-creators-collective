@@ -45,6 +45,7 @@ const SellerSubscription = () => {
   const ADMIN_PASSCODE = "craftora-admin";
   const [isAdmin, setIsAdmin] = useState<boolean>(() => sessionStorage.getItem("craftora_admin") === "true");
   const [adminInput, setAdminInput] = useState("");
+  const [visitorStats, setVisitorStats] = useState<{ total: number; unique: number; today: number; recent: Array<{ created_at: string; path: string | null; user_agent: string | null; visitor_key: string }> }>({ total: 0, unique: 0, today: 0, recent: [] });
 
   const handleAdminUnlock = () => {
     if (adminInput.trim() === ADMIN_PASSCODE) {
